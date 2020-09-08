@@ -2,7 +2,6 @@
   <div>
     <b-button class="control">SENSORS</b-button>
     <b-button class="control">USERS</b-button>
-    
   </div>
 </template>
 
