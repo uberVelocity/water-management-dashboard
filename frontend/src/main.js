@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
+
+// Import CSS Framework Buefy
 import 'buefy/dist/buefy.css'
 import Buefy from 'buefy'
 import VueRouter from 'vue-router'
 
+// Import Pages
 import Home from '@/pages/Home'
 import Admin from '@/pages/Admin'
 
@@ -17,9 +20,6 @@ const routes = [
   { path: '/admin', component: Admin }
 ]
 
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
 const router = new VueRouter({
   routes, // short for `routes: routes`,
   mode: 'history'
