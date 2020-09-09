@@ -39,10 +39,6 @@
 
 <style scoped>
   .container {
-    margin-right: 30em;
-    margin-top: 5em;
-    margin-left: 5em;
-    padding: 0px 5em 0px 5em;
-    text-align: left;
+    padding: 3vw;
   }
 </style>

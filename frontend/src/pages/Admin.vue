@@ -2,7 +2,7 @@
   <div>
     <Nav/>
     <div class="columns">
-      <div class="column is-one-third">
+      <div class="column is-narrow">
         <AdminMenu @setCurrentPage="setCurrentPage"/>
       </div>
       <div class="column" v-show="currentPage === 'sensors'">
