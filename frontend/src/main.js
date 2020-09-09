@@ -6,6 +6,9 @@ import 'buefy/dist/buefy.css'
 import Buefy from 'buefy'
 import VueRouter from 'vue-router'
 
+// Import Vuex store
+import store from './store'
+
 // Import Pages
 import Home from '@/pages/Home'
 import Admin from '@/pages/Admin'
@@ -21,11 +24,12 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes, // short for `routes: routes`,
+  routes, 
   mode: 'history'
 })
 
 new Vue({
+  store,
+  router,
   render: h => h(App),
-  router
 }).$mount('#app')
