@@ -37,7 +37,7 @@
   }
 </script>
 
-<style style='scoped'>
+<style scoped>
   .container {
     margin-right: 30em;
     margin-top: 5em;

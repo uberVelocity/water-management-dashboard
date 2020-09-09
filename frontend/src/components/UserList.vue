@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <p>User list</p>
   </div>
 </template>
 
@@ -10,6 +10,6 @@
   }
 </script>
 
-<style>
+<style scoped>
 
 </style>

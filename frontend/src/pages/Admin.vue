@@ -1,13 +1,15 @@
 <template>
   <div>
     <Nav/>
-    <h1>Admin</h1>
     <div class="columns">
       <div class="column is-one-third">
-        <AdminMenu/>
+        <AdminMenu @setCurrentPage="setCurrentPage"/>
       </div>
-      <div class="column">
-        <SensorList/>
+      <div class="column" v-show="currentPage === 'sensors'">
+        <SensorList />
+      </div>
+      <div class="column" v-show="currentPage === 'users'">
+        <UserList />
       </div>
     </div>
   </div>
@@ -17,19 +19,29 @@
 import Nav from '@/components/Nav'
 import SensorList from '@/components/SensorList.vue'
 import AdminMenu from '@/components/AdminMenu.vue'
+import UserList from '@/components/UserList.vue'
 
 export default {
   name: 'Admin',
   components: {
     Nav,
     SensorList,
-    AdminMenu
+    AdminMenu,
+    UserList
+  },
+  data() {
+    return {
+      currentPage: 'sensors'
+    }
+  },
+  methods: {
+    setCurrentPage(value) {
+      if (this.currentPage !== value)
+        this.currentPage = value
+    }
   }
 }
 </script>
 
-<style>
-  p {
-    background-color: red;
-  }
+<style scoped>
 </style>
