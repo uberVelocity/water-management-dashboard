@@ -6,9 +6,9 @@
 </template>
 
 <script>
-export default {
-  name: 'AdminMenu'
-}
+  export default {
+    name: 'AdminMenu'
+  }
 </script>
 
 <style>
@@ -16,10 +16,9 @@ export default {
     font-size: 200%;
     font-weight: bold;
   }
-  
+
   .control {
-    
+
     margin-right: 0.5em;
   }
-
 </style>

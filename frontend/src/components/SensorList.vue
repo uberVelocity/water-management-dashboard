@@ -17,27 +17,22 @@
 </template>
 
 <script>
+  import {
+    mapGetters
+  } from 'vuex';
+
   export default {
     name: 'SensorList',
     data() {
       return {
-        sensors: [{
-            id: '1',
-            state: 'Online',
-            values: [10, 20, 30, 40, 50, 60]
-          },
-          {
-            id: '2',
-            state: 'Online',
-            values: [10, 20, 30, 40, 50, 60]
-          },
-          {
-            id: '3',
-            state: 'Offline',
-            values: [10, 60, 30, 40, 50, 60]
-          },
-        ]
+        sensors: []
       }
+    },
+    methods: {
+      ...mapGetters(['getSensors'])
+    },
+    created() {
+      this.sensors = this.getSensors()
     }
   }
 </script>
