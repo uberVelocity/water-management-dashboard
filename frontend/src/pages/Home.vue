@@ -1,7 +1,6 @@
 <template>
   <div>
     <Nav />
-    <h1>Home</h1>
     <div class="chart">
       <template>
         <div class="charts">
