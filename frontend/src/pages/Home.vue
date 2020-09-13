@@ -18,7 +18,7 @@
           </div>
           <div class="columns">
             <column>
-              <VueApexCharts width="500" type="line" :options="elsed" :series="series2"></VueApexCharts>
+              <VueApexCharts width="500" type="bar" :options="elsed" :series="series2"></VueApexCharts>
             </column>
             <column>
               <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
@@ -62,6 +62,7 @@
     data() {
       return {
         options: {
+          colors: ['#3e3ea3', '#333333', '#ac3a43'],
           chart: {
             id: 'vuechart-example'
           },
@@ -70,6 +71,11 @@
           }
         },
         elsed: {
+          fill: {
+            colors: [
+              '#44cc5e'
+            ]
+          },
           chart: {
             id: 'vuechart-example'
           },
