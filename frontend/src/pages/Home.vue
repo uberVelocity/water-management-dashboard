@@ -2,6 +2,47 @@
   <div>
     <Nav />
     <h1>Home</h1>
+    <div class="chart">
+      <template>
+        <div class="charts">
+          <div class="columns">
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+          </div>
+          <div class="columns">
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+          </div>
+          <div class="columns">
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+            <column>
+              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
+            </column>
+          </div>
+        </div>
+        <div>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -10,11 +51,29 @@
   import {
     mapActions
   } from 'vuex'
-
+  import VueApexCharts from 'vue-apexcharts'
   export default {
+
     name: 'Home',
     components: {
-      Nav
+      Nav,
+      VueApexCharts
+    },
+    data() {
+      return {
+        options: {
+          chart: {
+            id: 'vuechart-example'
+          },
+          xaxis: {
+            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+          }
+        },
+        series: [{
+          name: 'series-1',
+          data: [30, 40, 45, 50, 49, 60, 70, 91]
+        }]
+      }
     },
     methods: {
       ...mapActions(['fetchSensors'])
@@ -25,6 +84,9 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .charts {
+    padding: 5em 0em 0em 5em;
+    margin: 5em 0em 0em 5em;
+  }
 </style>
