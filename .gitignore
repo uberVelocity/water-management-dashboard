@@ -1,3 +1,6 @@
+# scala dev folder
+scala
+shady_dashboard/
 .DS_Store
 node_modules/
 /dist/
