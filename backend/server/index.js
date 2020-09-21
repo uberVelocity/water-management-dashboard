@@ -4,7 +4,7 @@ var app = express();
 const localDatacenter = 'datacenter1';
 const cassandra = require('cassandra-driver');
 const contactPoints = ['cassandra', 'cassandra', 'cassandra'];
-const loadBalancingPolicy = new cassandra.policies.loadBalancing.DCAwareRoundRobinPolicy(localDatacenter); 
+const loadBalancingPolicy = new cassandra.policies.loadBalancing.DCAwareRoundRobinPolicy(localDatacenter);
 const clientOptions = {
    policies : {
       loadBalancing : loadBalancingPolicy
@@ -15,7 +15,7 @@ const clientOptions = {
 };
 let cassandraClient = new cassandra.Client(clientOptions);
 
-var query = 'SELECT * FROM sensors';
+var query = 'SELECT * FROM sensor';
 
 cassandraClient.execute(query, function(err, res) {
   if (!err) {
