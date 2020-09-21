@@ -1,8 +1,14 @@
-version: '2'
+version: '3'
 networks: 
-    bridge-network: 
-        driver: bridge
+  bridge-network: 
+    driver: bridge
 
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+    
 services:
   zookeeper:
     image: 'docker.io/bitnami/zookeeper:3-debian-10'
@@ -32,6 +38,7 @@ services:
       - zookeeper
     restart: always
 
+  # Kafka Producer (sensors)
   producer:
     container_name: sensor
     build: sensors/
@@ -39,6 +46,7 @@ services:
       - bridge-network
     restart: always
 
+  # Kafka Consumer
   consumer:
     container_name: consumer
     build: consumer
@@ -46,8 +54,26 @@ services:
       - bridge-network
     restart: always
 
-volumes:
-  zookeeper_data:
-    driver: local
-  kafka_data:
-    driver: local
+  # Backend serving the Frontend
+  backend:
+    container_name: backend
+    build: backend/
+    networks: 
+      - bridge-network
+    depends_on:
+      - cassandra
+    restart: always
+
+  cassandra:
+    container_name: cassandra
+    build: cassandra/
+    networks: 
+      - bridge-network
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
+
