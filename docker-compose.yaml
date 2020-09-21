@@ -1,0 +1,25 @@
+version: '3'
+networks: 
+    bridge-network: 
+        driver: bridge
+services: 
+    toffee:
+        container_name: toffee
+        build: backend/
+        networks: 
+            - bridge-network
+        depends_on:
+            - cassandra
+        restart: always
+    cassandra:
+        container_name: cassandra
+        build: cassandra/
+        networks: 
+            - bridge-network
+        expose:
+            - 7000
+            - 7001
+            - 7199
+            - 9042
+            - 9160
+        restart: always
