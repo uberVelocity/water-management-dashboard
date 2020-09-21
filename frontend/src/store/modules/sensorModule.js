@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://backend:5000/api/status';
+const url = 'http://localhost:5000/api/status';
 
 const state = {
     status: undefined,
@@ -19,7 +19,7 @@ const getters = {
 const actions = {
     async fetchStatus({ commit }) {
         const response = await axios.get(url);
-        commit('setStatus', response);
+        commit('setStatus', response.data);
     },
 
     // Retrieve all sensors from the database

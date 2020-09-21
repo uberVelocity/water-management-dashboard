@@ -1,6 +1,8 @@
 <template>
   <div>
     <Nav/>
+    <h1>status: {{status}}</h1>
+    <b-button @click="getStatusDemo" label="Get Status"></b-button>
     <div class="columns">
       <div class="column is-narrow">
         <AdminMenu @setCurrentPage="setCurrentPage"/>
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import Nav from '@/components/Nav'
 import SensorList from '@/components/SensorList.vue'
 import AdminMenu from '@/components/AdminMenu.vue'
@@ -31,14 +34,23 @@ export default {
   },
   data() {
     return {
-      currentPage: 'sensors'
+      currentPage: 'sensors',
+      status: ''
     }
   },
   methods: {
+    ...mapGetters(['getStatus']),
+    ...mapActions(['fetchStatus']),
     setCurrentPage(value) {
       if (this.currentPage !== value)
         this.currentPage = value
-    }
+    },
+    getStatusDemo() {
+      this.status = this.getStatus()
+    },
+  },
+  created() {
+    this.fetchStatus()
   }
 }
 </script>

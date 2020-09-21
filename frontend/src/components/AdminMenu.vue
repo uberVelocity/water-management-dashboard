@@ -1,6 +1,5 @@
 <template>
   <div class="sidebar-page">
-    <h1>Status: {{status}}</h1>
     <section class="sidebar-layout">
       <b-sidebar position="static" type="is-light" open>
         <div class="p-1">
@@ -30,11 +29,6 @@
     methods: {
       setCurrentPage(value) {
         this.$emit('setCurrentPage', value)
-      }
-    },
-    data() {
-      return {
-        status: undefined
       }
     }
   }
