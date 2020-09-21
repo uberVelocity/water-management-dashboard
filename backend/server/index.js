@@ -1,6 +1,6 @@
 const express = require('express');
-const cors = require('cors')
-const bodyParser = require('body-parser')
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -15,7 +15,6 @@ app.use(express.json());
 // Import routes
 const status = require('../routes/api/status');
 const sensor = require('../routes/api/sensor');
-
 
 // Use routes
 app.use('/api/status', status);
