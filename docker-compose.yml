@@ -54,6 +54,16 @@ services:
       - bridge-network
     restart: always
 
+  # Frontend
+  frontend:
+    container_name: frontend
+    build: frontend/
+    networks:
+      - bridge-network
+    restart: always
+    ports:
+      - '80:80'
+
   # Backend serving the Frontend
   backend:
     container_name: backend
