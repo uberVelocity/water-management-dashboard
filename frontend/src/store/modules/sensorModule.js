@@ -1,18 +1,27 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-// const url = 'http://backend_url:backend_port/route';
+const url = 'http://backend:5000/api/status';
 
 const state = {
+    status: undefined,
     sensors: []
 };
 
 const getters = {
     getSensors: state => {
         return state.sensors
+    },
+    getStatus: state => {
+        return state.status
     }
 };
 
 const actions = {
+    async fetchStatus({ commit }) {
+        const response = await axios.get(url);
+        commit('setStatus', response);
+    },
+
     // Retrieve all sensors from the database
     async fetchSensors({ commit }) {
         // TODO: Insert API call to backend to retrieve sensors (make function async)
@@ -39,6 +48,7 @@ const actions = {
 
 const mutations = {
     setSensors: (state, sensors) => (state.sensors = sensors),
+    setStatus: (state, status) => (state.status = status)
 };
 
 export default {
