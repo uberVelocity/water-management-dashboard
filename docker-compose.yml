@@ -63,6 +63,8 @@ services:
     depends_on:
       - cassandra
     restart: always
+    ports: 
+      - '5000:5000'
 
   cassandra:
     container_name: cassandra
