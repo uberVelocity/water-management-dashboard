@@ -1,7 +1,7 @@
 FROM node:10
 
 # Create app directory
-WORKDIR node
+WORKDIR consumer
 
 # Install app dependencies
 COPY package*.json ./
@@ -12,4 +12,4 @@ RUN npm install
 COPY . .
 
 # Run commands
-CMD ["node", "kafka.js"]
+CMD ["node", "consumer.js"]

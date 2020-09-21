@@ -41,7 +41,7 @@ services:
 
   consumer:
     container_name: consumer
-    build: node
+    build: consumer
     networks: 
       - bridge-network
     restart: always
