@@ -28,6 +28,6 @@ producer = KafkaProducer(bootstrap_servers=['kafka:9092'],
 while True:
     time.sleep(5)
     data = generate_data()
-    producer.send('sensor1',data.to_json())
+    producer.send('sensor1', data.to_json())
 
 
