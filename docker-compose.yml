@@ -76,9 +76,21 @@ services:
     ports: 
       - '5000:5000'
 
+  # Backend responsible for authentication
+  backend-auth:
+    container_name: backend-auth
+    build: backend-auth/
+    networks:
+      - bridge-network
+    depends_on:
+      - mongo
+    ports: 
+      - '4000:4000'
+    restart: always
+
   mongo:
     build: mongo/
-    container_name: mongodb
+    container_name: mongo
     networks: 
       - bridge-network
     environment:
