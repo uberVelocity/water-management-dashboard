@@ -278,3 +278,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Don't push MongoDB volume for now
+mongodata/

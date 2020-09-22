@@ -75,6 +75,21 @@ services:
     ports: 
       - '5000:5000'
 
+  mongo:
+    build: mongo/
+    container_name: mongodb
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+      - MONGO_INITDB_USERNAME=mongoUsername
+      - MONGO_INITDB_PASSWORD=mongoPassword
+    volumes: 
+      - ./mongo/mongodata:/data/db
+    ports:
+      - '27017-27019:27017-27019'
+    restart: always
+
   cassandra:
     container_name: cassandra
     build: cassandra/
