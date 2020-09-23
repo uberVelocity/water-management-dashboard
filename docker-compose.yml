@@ -95,8 +95,6 @@ services:
       - bridge-network
     environment:
       - MONGO_INITDB_DATABASE=auth_db
-      - MONGO_INITDB_USERNAME=mongoUsername
-      - MONGO_INITDB_PASSWORD=mongoPassword
     volumes: 
       - ./mongo/mongodata:/data/db
     ports:

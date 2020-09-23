@@ -5,12 +5,12 @@ const app = express();
 // MongoDB
 const mongoose = require('mongoose');
 const mongoUrl = 'mongodb://mongo:27017/auth_db';
-mongoose.connect(mongoUrl, {useNewUrlParser: true});
+mongoose.connect(mongoUrl, {useNewUrlParser: true}).then(() => console.log('MongoDB Connected'));
 
 // - Check connection
 const db = mongoose.connection;
 db.once('open', _ => {
-    console.log('Database connected:', url)
+    console.log('Database connected:', mongoUrl)
 })
   
 db.on('error', err => {
