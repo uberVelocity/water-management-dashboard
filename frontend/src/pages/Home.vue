@@ -93,7 +93,7 @@
       }
     },
     methods: {
-      ...mapActions(['fetchSensors'])
+      ...mapActions(['fetchSensors']),
     },
     created() {
       this.fetchSensors()
