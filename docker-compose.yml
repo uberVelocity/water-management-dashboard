@@ -1,0 +1,106 @@
+version: '3'
+networks: 
+  bridge-network: 
+    driver: bridge
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+    
+services:
+  zookeeper:
+    image: 'docker.io/bitnami/zookeeper:3-debian-10'
+    ports:
+      - '2181:2181'
+    networks: 
+      - bridge-network
+    volumes:
+      - 'zookeeper_data:/bitnami'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    restart: always
+
+  kafka:
+    container_name: kafka
+    image: 'docker.io/bitnami/kafka:2-debian-10'
+    ports:
+      - '9092:9092'
+    networks: 
+      - bridge-network
+    volumes:
+      - 'kafka_data:/bitnami'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+    restart: always
+
+  # Kafka Producer (sensors)
+  producer:
+    container_name: sensor
+    build: sensors/
+    networks: 
+      - bridge-network
+    restart: always
+
+  # Kafka Consumer
+  consumer:
+    container_name: consumer
+    build: consumer
+    networks: 
+      - bridge-network
+    restart: always
+
+  # Frontend
+  frontend:
+    container_name: frontend
+    build: frontend/
+    networks:
+      - bridge-network
+    restart: always
+    ports:
+      - '80:80'
+
+  # Backend serving the Frontend
+  backend:
+    container_name: backend
+    build: backend/
+    networks: 
+      - bridge-network
+    depends_on:
+      - cassandra
+    restart: always
+    ports: 
+      - '5000:5000'
+
+  mongo:
+    build: mongo/
+    container_name: mongodb
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+      - MONGO_INITDB_USERNAME=mongoUsername
+      - MONGO_INITDB_PASSWORD=mongoPassword
+    volumes: 
+      - ./mongo/mongodata:/data/db
+    ports:
+      - '27017-27019:27017-27019'
+    restart: always
+
+  cassandra:
+    container_name: cassandra
+    build: cassandra/
+    networks: 
+      - bridge-network
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
+
