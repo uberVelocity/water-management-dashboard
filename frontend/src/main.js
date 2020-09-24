@@ -14,6 +14,13 @@ import Home from '@/pages/Home'
 import Admin from '@/pages/Admin'
 import Live from '@/pages/Live'
 
+// Import socket.io
+import VueSocketIO from 'vue-socket.io'
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'http://localhost:5000'
+}))
+
 Vue.use(VueRouter)
 Vue.use(Buefy)
 
