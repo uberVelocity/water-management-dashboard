@@ -32,9 +32,16 @@ const connections = [];
 io.sockets.on('connection', (socket) => {
     connections.push(socket);
     console.log(`a user has connected: ${connections.length} connected`);
+    setInterval(() => {
+        console.log('generating data...');
+        let value = Math.random();
+        console.log(`value: ${value}`);
+        socket.emit('temperature', value);
+        console.log('emitted to temperature');
+    }, 3000)
+});
 
-    socket.on('disconnect', (data) => {
-        connections.splice(connections.indexOf(socket, 1));
-        console.log(`a user has disconnected: ${connections.length} connected`);
-    });
+io.sockets.on('disconnect', (socket) => {
+    connections.splice(connections.indexOf(socket, 1));
+    console.log(`a user has disconnected: ${connections.length} connected`);
 });
