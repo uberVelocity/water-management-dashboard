@@ -2,21 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-// MongoDB
+// Connect to MongoDB database
 const mongoose = require('mongoose');
 const mongoUrl = 'mongodb://mongo:27017/auth_db';
 mongoose.connect(mongoUrl, {useNewUrlParser: true}).then(() => console.log('MongoDB Connected'));
-
-// - Check connection
-const db = mongoose.connection;
-db.once('open', _ => {
-    console.log('Database connected:', mongoUrl)
-})
-  
-db.on('error', err => {
-    console.error('connection error:', err)
-})
-// -----------------------------------
 
 app.use(bodyParser.urlencoded({extended: true}));
 
