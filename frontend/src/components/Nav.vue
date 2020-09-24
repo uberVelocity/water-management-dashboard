@@ -13,12 +13,8 @@
       <template slot="end">
         <b-navbar-item tag="div">
           <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              Log in
-            </a>
+            <RegisterModal />
+            <LoginBtn />
           </div>
         </b-navbar-item>
       </template>
@@ -27,8 +23,12 @@
 </template>
 
 <script>
+  import LoginBtn from '@/components/LoginBtn.vue';
+  import RegisterModal from '@/components/RegisterModal.vue';
+
   export default {
     name: 'Nav',
+    components: {LoginBtn, RegisterModal},
     methods: {
       goHome() {
         this.$router.push('/')
