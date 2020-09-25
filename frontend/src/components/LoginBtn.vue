@@ -33,7 +33,8 @@
                         <!-- <b-checkbox>Remember me</b-checkbox> -->
                     </section>
                     <footer class="modal-card-foot">
-                        <button class="button is-primary">Login</button>
+                        <button class="button is-primary" @click="testLogin">Login</button>
+                        <button class="button is-primary" @click="testGetUsers">Get Users</button>
                     </footer>
                 </div>
             </form>
@@ -42,8 +43,28 @@
 </template>
 
 <script>
+import axios from 'axios';
+const urlCreate = 'http://localhost:4000/api/auth/createUser';
+const urlGet = 'http://localhost:4000/api/auth/getUsers';
+
 export default {
     name: 'LoginBtn',
+    methods: {
+        async testLogin() {
+            // eslint-disable-next-line no-console
+            console.log('Button pressed, sending request!');
+            const response = await axios.get(urlCreate);
+            // eslint-disable-next-line no-console
+            console.log('Response: ' + response);
+        },
+        async testGetUsers() {
+            // eslint-disable-next-line no-console
+            console.log('Button pressed, sending request!');
+            const response = await axios.get(urlGet);
+            // eslint-disable-next-line no-console
+            console.log('Response: ' + response);
+        }
+    }
 }
 </script>
 
