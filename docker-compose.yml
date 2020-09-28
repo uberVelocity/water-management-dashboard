@@ -40,7 +40,6 @@ services:
 
   # Kafka Producer (sensors)
   producer:
-    container_name: sensor
     build: sensors/
     networks: 
       - bridge-network
