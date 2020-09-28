@@ -71,6 +71,7 @@ export default {
             if (response.status === 200) {
                 // eslint-disable-next-line no-console
                 console.log(response.data);
+                localStorage.setItem('authorization', response.headers['authorization']);
             } else {
                 alert(response);
             }

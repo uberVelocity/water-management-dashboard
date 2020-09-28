@@ -23,7 +23,10 @@ mongoose.connection.on('error', err => {
 // Setup middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+const corsOptions = {
+    exposedHeaders: 'Authorization',
+  };
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Use routes
