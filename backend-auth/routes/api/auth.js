@@ -5,7 +5,6 @@ const jwt_authorization = require('../../middleware/jwt_authorization');
 const { User, validateUser } = require('../../mongo_models/User');
 const bcrypt = require('bcrypt');
 
-
 router.get('/currentUser', jwt_authorization, async (req, res) => {
     console.log('Received request: GET CURRENT USER');
     const user = await User.findById(req.user._id).select("-password");
