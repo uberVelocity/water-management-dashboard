@@ -37,11 +37,12 @@ router.post('/registerUser', async (req, res) => {
 
     // Generate token and send response
     const token = await user.generateAuthToken();
-    res.header("x-auth-token", token).send({
+    res.header("Authorization", [token]).send({
         _id: user._id,
         username: user.username,
         email: user.email
     });
+    res.end();
     console.log('Token created and sent');
 });
 

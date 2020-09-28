@@ -3,7 +3,7 @@ const config = require("config");
 
 module.exports = function(req, res, next) {
   // Get the token from the header if present
-  const token = req.headers["x-access-token"] || req.headers["authorization"];
+  const token = req.headers["Authorization"] || req.headers["authorization"];
 
   // If no token found, return response and stop
   if (!token) return res.status(401).send("Access denied. No token provided.");

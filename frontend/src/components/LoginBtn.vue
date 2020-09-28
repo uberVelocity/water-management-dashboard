@@ -49,9 +49,16 @@ export default {
     name: 'LoginBtn',
     methods: {
         async getUsers() {
+
+            const config = {
+                headers : {
+                    authorization : localStorage.getItem('authorization')
+                }
+            }
+
             // eslint-disable-next-line no-console
             console.log('Button pressed, sending request!');
-            const response = await axios.get(urlGet);
+            const response = await axios.get(urlGet, config);
             if (response.status === 200) {
                 // eslint-disable-next-line no-console
                 console.log(response.data);
