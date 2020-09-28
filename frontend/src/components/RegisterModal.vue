@@ -35,7 +35,7 @@
                                 v-model="password">
                             </b-input>
                         </b-field>
-                        <button class="button is-primary">Register</button>
+                        <button class="button is-primary" @click="registerUser">Register</button>
                         <p>{{username}} {{email}} {{password}}</p>
                     </div>
                 </div>
@@ -45,18 +45,38 @@
 </template>
 
 <script>
+import axios from 'axios';
 
-    export default {
-        name: 'RegisterModal',
-        data() {
-            return {
-                isComponentModalActive: false,
-                username: '',
-                email: '',
-                password: ''
+export default {
+    name: 'RegisterModal',
+    data() {
+        return {
+            isComponentModalActive: false,
+            username: '',
+            email: '',
+            password: ''
+        }
+    },
+    methods : {
+        async registerUser() {
+            const urlRegister = 'http://localhost:4000/api/auth/registerUser';
+
+            // TODO: VALIDATE FIELDS BEFORE BACKEND CALL
+
+            const response = await axios.post(urlRegister, {
+                username : this.username,
+                email : this.email,
+                password : this.password
+            });
+            if (response.status === 200) {
+                // eslint-disable-next-line no-console
+                console.log(response.data);
+            } else {
+                alert(response);
             }
         }
     }
+}
 </script>
 
 <style scoped>

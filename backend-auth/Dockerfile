@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:latest
 
 # Create app directory
 WORKDIR backend-auth
@@ -16,3 +16,5 @@ EXPOSE 4000
 
 # Run commands
 CMD ["node", "server/server.js"]
+
+ENV myprivatekey = "myprivatekey"
