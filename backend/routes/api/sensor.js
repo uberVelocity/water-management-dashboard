@@ -2,21 +2,29 @@ const router = require('express').Router();
 const connectCassandra = require('../../middleware/connectCassandra');
 
 // GET URL:PORT/api/sensor/
-router.get('/', connectCassandra, (req, res) => {
+router.get('/', connectCassandra, async (req, res) => {
     console.log(`received GET request sensor`);
     const cassandraClient = res.client;
-    const query = 'SELECT * FROM sensor';
-    cassandraClient.execute(query, function (err, result) {
-        console.log('executing query');
-        if (!err) {
-            console.log('Good');
-            console.log(result);
-            res.status(200).json({ result });
-        } else {
-            console.log(err);
-            res.status(500).send(err.message);
-        }
-    });
+    console.log(cassandraClient);
+    const query = 'SELECT * FROM sensor1';
+    let data = undefined;
+    await new Promise((resolve, reject) => {
+        cassandraClient.execute(query, function (err, result) {
+            console.log('executing query');
+            if (!err) {
+                console.log('Successful query!');
+                data = result.rows;
+            } else {
+                console.log('Unsuccessful query!');
+                res.status(500).send(err.message);
+            }
+            resolve();
+        });
+    }).then(
+        response => {},
+        reason => {}
+    );
+    res.status(200).json({ data });
 });
 
 module.exports = router;

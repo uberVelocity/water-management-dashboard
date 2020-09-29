@@ -28,15 +28,26 @@ server.listen(port, () => console.log(`Backend started on port ${port}`));
 const io = require('socket.io')(server);
 const connections = [];
 
+const getSensorData = require('../services/getSensorData');
+const cassandraClient = require('../services/cassandraClient');
+
 // Listen for socket connections
 io.sockets.on('connection', (socket) => {
+
     connections.push(socket);
     console.log(`a user has connected: ${connections.length} connected`);
-    setInterval(() => {
+    setInterval(async () => {
+        // Getting data from cassandra every 3 seconds
+        console.log('Getting data...');
+        const data = await getSensorData.getSensorData(cassandraClient);
+        console.log('received data:');
+        console.log(data);
+
+        // Generating data on the fly every 3 seconds
         console.log('generating data...');
         let value = Math.random();
         console.log(`value: ${value}`);
-        socket.emit('temperature', value);
+        socket.emit('temperature', data);
         console.log('emitted to temperature');
     }, 3000)
 });
