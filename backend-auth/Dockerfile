@@ -1,7 +1,7 @@
 FROM node:latest
 
 # Create app directory
-WORKDIR backend
+WORKDIR backend-auth
 
 # Install app dependencies
 COPY package*.json ./
@@ -12,7 +12,9 @@ RUN npm install
 COPY . .
 
 # Expose port 5000
-EXPOSE 5000
+EXPOSE 4000
 
 # Run commands
-CMD ["node", "server/index.js"]
+CMD ["node", "server/server.js"]
+
+ENV myprivatekey = "myprivatekey"
