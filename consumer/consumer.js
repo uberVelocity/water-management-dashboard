@@ -55,7 +55,7 @@ async function consume(){
       const pressure = data["pressure"][ts];
       const temperature = data["temperature"][ts];
       const params = [ts,pressure, temperature];
-      console.log(params)
+      console.log(params);
       insertPrediction(params);
     }
   });
