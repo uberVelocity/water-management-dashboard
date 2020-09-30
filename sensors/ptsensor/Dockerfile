@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR sensors
+WORKDIR ptsensor
 
 COPY ptSensor.py ./
 COPY requirements.txt ./

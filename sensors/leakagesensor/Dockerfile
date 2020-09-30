@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR leakageSensor
+WORKDIR leakagesensor
 
 COPY leakageSensor.py ./
 COPY requirements.txt ./

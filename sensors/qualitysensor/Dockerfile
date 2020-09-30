@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR qualitySensor
+WORKDIR qualitysensor
 
 COPY qualitySensor.py ./
 COPY requirements.txt ./
