@@ -34,7 +34,7 @@
 
       // Fired when the server sends something on the "messageChannel" channel.
       temperature(data) {
-        this.temperature = data
+        this.temperature = data;
       }
     }
   }
