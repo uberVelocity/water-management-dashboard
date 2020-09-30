@@ -60,10 +60,10 @@ services:
       - bridge-network
     restart: always
   
-  # Kafka Consumer
-  consumer:
-    container_name: consumer
-    build: consumer
+  # Kafka Consumers
+  consumerdb:
+    container_name: consumerdb
+    build: consumer/consumerDB
     networks: 
       - bridge-network
     restart: always

@@ -38,7 +38,6 @@ producer = KafkaProducer(bootstrap_servers=['kafka:9092'],
 while True:
     time.sleep(5)
     leak = random.uniform(0, 1)
-    leak = leak;
     if leak < 0.01:
         data = generateLeakage(strengthOfLeakage[2])
         producer.send('sensor_data', value=data)

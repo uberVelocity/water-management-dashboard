@@ -1,7 +1,7 @@
 FROM node:10
 
 # Create app directory
-WORKDIR consumer
+WORKDIR consumerDB
 
 # Install app dependencies
 COPY package*.json ./
