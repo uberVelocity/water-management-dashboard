@@ -6,7 +6,7 @@
         <div class="charts">
           <div class="columns">
             <div class="column">
-              <VueApexCharts width="500" type="line" :options="options" :series="series"></VueApexCharts>
+              <LineChart />
             </div>
           </div>
         </div>
@@ -22,35 +22,18 @@
   import {
     mapActions
   } from 'vuex'
-  import VueApexCharts from 'vue-apexcharts'
+  import LineChart from '@/charts/LineChart'
   export default {
 
     name: 'Home',
     components: {
       Nav,
-      VueApexCharts
+      LineChart,
     },
     data() {
       return {
         isConnected: false,
         socket: undefined,
-        series: [],
-        xaxis: {
-          type: 'datetime'
-        },
-        options: {
-          colors: ['#3e3ea3', '#333333', '#ac3a43'],
-          chart: {
-            id: 'vuechart-example',
-            type: 'bar'
-          },
-          dataLabels: {
-            enabled: false
-          },
-          noData: {
-            text: 'Loading...'
-          }
-        },
       }
     },
     sockets: {
@@ -64,9 +47,12 @@
       // Fired when the server sends something on the "messageChannel" channel.
       temperature(data) {
         data = data.map(e => ({x: e.ts, y: e.temperature}));
-        this.series = [{
-          data: data
-        }];
+        /*
+        if (data.type == 'pt') {
+          this.$store.dispatch("STORE_PT_SENSORS", data);
+        }
+        */
+
         // eslint-disable-next-line no-console
         console.log(data);
       }
@@ -74,9 +60,6 @@
     methods: {
       ...mapActions(['fetchSensors']),
     },
-    created() {
-      //this.fetchSensors();
-    }
   }
 </script>
 

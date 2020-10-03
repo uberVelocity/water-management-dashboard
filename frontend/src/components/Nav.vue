@@ -8,9 +8,6 @@
         <b-navbar-item @click="goAdmin" href="#">
           Admin
         </b-navbar-item>
-        <b-navbar-item @click="goLive" href="#">
-          Live
-        </b-navbar-item>
       </template>
 
       <template slot="end">
@@ -39,9 +36,6 @@
       goAdmin() {
         this.$router.push('/admin')
       },
-      goLive() {
-        this.$router.push('/live')
-      }
     }
   }
 </script>

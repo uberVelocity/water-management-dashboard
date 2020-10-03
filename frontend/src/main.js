@@ -12,7 +12,6 @@ import store from './store'
 // Import Pages
 import Home from '@/pages/Home'
 import Admin from '@/pages/Admin'
-import Live from '@/pages/Live'
 
 // Import socket.io
 import VueSocketIO from 'vue-socket.io'
@@ -29,7 +28,6 @@ Vue.config.productionTip = false
 const routes = [
   { path: '/', component: Home},
   { path: '/admin', component: Admin },
-  { path: '/live', component: Live},
 ]
 
 const router = new VueRouter({
