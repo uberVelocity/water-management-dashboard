@@ -5,7 +5,7 @@ import time
 import uuid
 import random
 
-listOfCities = ["Asmterdam","Rotterdam","Hague","Groningen","Zwolle","Assen","Meppel","Almere","Tilburg","Haarlem","Delft","Amersfoort","Utrecht"]
+listOfCities = ["Amsterdam","Rotterdam","Hague","Groningen","Zwolle","Assen","Meppel","Almere","Tilburg","Haarlem","Delft","Amersfoort","Utrecht"]
 strengthOfLeakage = ["mild","moderate","severe"]
 #Creating uniq id
 id = uuid.uuid4()
