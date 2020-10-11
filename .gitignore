@@ -9,6 +9,11 @@ node_modules/
 .env.local
 .env.*.local
 
+# MongoDB persistent data
+data1
+data2
+data3
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

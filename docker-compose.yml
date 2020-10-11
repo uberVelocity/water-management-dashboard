@@ -120,20 +120,24 @@ services:
 
   # Database for storing user information
   mongo_1:
-    build: mongo/
+    build: mongo-master/
     container_name: mongo_1
     networks: 
       - bridge-network
     environment:
       - MONGO_INITDB_DATABASE=auth_db
     volumes: 
-      - ./mongo/mongodata:/data/db
+      - ./data1/db:/data/db
+      - ./data1/configdb:/data/configdb
+      - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
-      - '27017:27017'
+      - '27011:27017'
+    expose:
+      - 27017
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
 
-      # Database for storing user information
+  # Database for storing user information
   mongo_2:
     build: mongo/
     container_name: mongo_2
@@ -142,13 +146,16 @@ services:
     environment:
       - MONGO_INITDB_DATABASE=auth_db
     volumes: 
-      - ./mongo/mongodata:/data/db
+      - ./data2/db:/data/db
+      - ./data2/configdb:/data/configdb
     ports:
-      - '27017:21017'
+      - '27012:21017'
+    expose:
+      - 27017
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
 
-      # Database for storing user information
+  # Database for storing user information
   mongo_3:
     build: mongo/
     container_name: mongo_3
@@ -157,9 +164,12 @@ services:
     environment:
       - MONGO_INITDB_DATABASE=auth_db
     volumes: 
-      - ./mongo/mongodata:/data/db
+      - ./data3/db:/data/db
+      - ./data3/configdb:/data/configdb
     ports:
-      - '27017:21017'
+      - '27013:21017'
+    expose:
+      - 27017
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
 
