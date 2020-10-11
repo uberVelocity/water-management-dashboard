@@ -81,7 +81,7 @@ services:
     networks: 
       - bridge-network
     depends_on:
-      - cassandra
+      - cassandra_1
     restart: always
     ports:
       - '5001-5003:5001'
@@ -113,15 +113,15 @@ services:
     networks:
       - bridge-network
     depends_on:
-      - mongo
+      - mongo_1
     ports: 
       - '4000:4000'
     restart: always
 
   # Database for storing user information
-  mongo:
+  mongo_1:
     build: mongo/
-    container_name: mongo
+    container_name: mongo_1
     networks: 
       - bridge-network
     environment:
@@ -129,14 +129,50 @@ services:
     volumes: 
       - ./mongo/mongodata:/data/db
     ports:
-      - '27017-27019:27017-27019'
+      - '27017:27017'
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
 
-  cassandra:
-    container_name: cassandra
+      # Database for storing user information
+  mongo_2:
+    build: mongo/
+    container_name: mongo_2
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - ./mongo/mongodata:/data/db
+    ports:
+      - '27017:21017'
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
+
+      # Database for storing user information
+  mongo_3:
+    build: mongo/
+    container_name: mongo_3
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - ./mongo/mongodata:/data/db
+    ports:
+      - '27017:21017'
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
+
+  # Cassandra cluster containing three nodes
+  # replication factor = 3 (one copy of a row on each node)
+  cassandra_1:
+    container_name: cassandra_1
     build: cassandra/
     networks: 
       - bridge-network
+    environment:
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=2048M
     expose:
       - 7000
       - 7001
@@ -145,3 +181,36 @@ services:
       - 9160
     restart: always
 
+  cassandra_2:
+    container_name: cassandra_2
+    build: cassandra/
+    networks: 
+      - bridge-network
+    environment: 
+      - CASSANDRA_SEEDS=cassandra_1
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=2048M
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
+
+  cassandra_3:
+    container_name: cassandra_3
+    build: cassandra/
+    networks: 
+      - bridge-network
+    environment:
+      - CASSANDRA_SEEDS=cassandra_1
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=2048M
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
