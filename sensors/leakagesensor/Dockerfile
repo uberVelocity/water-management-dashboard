@@ -1,11 +1,11 @@
 FROM python:3
 
-WORKDIR sensors
+WORKDIR leakagesensor
 
-COPY ptSensor.py ./
+COPY leakageSensor.py ./
 COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python","ptSensor.py"]
+CMD ["python","leakageSensor.py"]
 
