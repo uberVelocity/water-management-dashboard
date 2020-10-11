@@ -31,7 +31,7 @@ const io = require('socket.io')(server);
 const connections = [];
 
 // Listen for socket connections
-io.sockets.on('connection', (socket) => {
+io.sockets.on('connection', async (socket) => {
     // Push connection to client on connections stack
     connections.push(socket);
     console.log(`a user has connected: ${connections.length} connected`);

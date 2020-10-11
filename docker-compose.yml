@@ -38,7 +38,7 @@ services:
       - zookeeper
     restart: always
 
-  # Kafka Producer (sensors)
+  # Kafka Producers (sensors)
   leakagesensor:
     build: sensors/leakagesensor
     networks: 
@@ -57,35 +57,45 @@ services:
       - bridge-network
     restart: always
   
-  # Kafka Consumers
-  consumerdb:
-    container_name: consumerdb
-    build: consumer/consumerdb
-    networks: 
-      - bridge-network
-    restart: always
-
-  # # Frontend
-  # frontend:
-  #   container_name: frontend
-  #   build: frontend/
-  #   networks:
-  #     - bridge-network
-  #   restart: always
-  #   ports:
-  #     - '80:80'
-
-  # # Backend serving the Frontend
-  # backend:
-  #   container_name: backend
-  #   build: backend/
+  # # Kafka Consumers
+  # consumerdb:
+  #   container_name: consumerdb
+  #   build: consumer/consumerdb
   #   networks: 
   #     - bridge-network
-  #   depends_on:
-  #     - cassandra
   #   restart: always
-  #   ports: 
-  #     - '5000:5000'
+
+  # Frontend
+  frontend:
+    container_name: frontend
+    build: frontend/
+    networks:
+      - bridge-network
+    restart: always
+    ports:
+      - '80:80'
+
+  # Backend serving the Frontend
+  backend:
+    container_name: backend
+    build: backend/
+    networks: 
+      - bridge-network
+    # depends_on:
+    #   - cassandra
+    restart: always
+    ports: 
+      - '5000:5000'
+
+  # Live update socket service
+  backend-updates:
+    container_name: backend-updates
+    networks:
+      - bridge-network
+    restart: always
+    build: backend-updates/
+    ports:
+      - '5001:5001'
 
   # # Backend responsible for authentication
   # backend-auth:
@@ -99,6 +109,7 @@ services:
   #     - '4000:4000'
   #   restart: always
 
+  # # Database for storing user information
   # mongo:
   #   build: mongo/
   #   container_name: mongo
@@ -112,16 +123,16 @@ services:
   #     - '27017-27019:27017-27019'
   #   restart: always
 
-  cassandra:
-    container_name: cassandra
-    build: cassandra/
-    networks: 
-      - bridge-network
-    expose:
-      - 7000
-      - 7001
-      - 7199
-      - 9042
-      - 9160
-    restart: always
+  # cassandra:
+  #   container_name: cassandra
+  #   build: cassandra/
+  #   networks: 
+  #     - bridge-network
+  #   expose:
+  #     - 7000
+  #     - 7001
+  #     - 7199
+  #     - 9042
+  #     - 9160
+  #   restart: always
 

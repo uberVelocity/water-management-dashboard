@@ -1,6 +1,6 @@
-import axios from 'axios';
+// import axios from 'axios';
 
-const url = 'http://localhost:5000/api/status';
+// const url = 'http://localhost:5000/api/status';
 
 const state = {
     pt_sensors: null,
