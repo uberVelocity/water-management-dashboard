@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 6000;
 
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));
