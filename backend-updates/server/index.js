@@ -52,13 +52,13 @@ io.sockets.on('connection', async (socket) => {
             console.log(`emitting to ${type}`)
 
             if (type == "pressure") {
-                socket.emit("pressure", data)
+                socket.broadcast.emit("pressure", data)
             } 
             else if (type == "leakage") {
-                socket.emit("leakage", data)
+                socket.broadcast.emit("leakage", data)
             } 
             else if (type == "quality") {
-                socket.emit("quality", data)
+                socket.broadcast.emit("quality", data)
             }
         }
     });
