@@ -104,7 +104,7 @@ services:
     restart: always
     build: backend-updates/
     ports:
-      - '6000:6000'
+      - '5500:5500'
 
   # Backend responsible for authentication
   backend-auth:
