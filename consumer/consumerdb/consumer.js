@@ -7,7 +7,7 @@ const kafka = new Kafka({
 // Cassandra variables
 const localDatacenter = 'datacenter1';
 const cassandra = require('cassandra-driver');
-const contactPoints = ['cassandra', 'cassandra', 'cassandra'];
+const contactPoints = ['cassandra_1', 'cassandra_2', 'cassandra_3'];
 const loadBalancingPolicy = new cassandra.policies.loadBalancing.DCAwareRoundRobinPolicy(localDatacenter);
 const clientOptions = {
   policies: {
