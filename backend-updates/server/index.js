@@ -5,7 +5,7 @@ const kafka = new Kafka({
   brokers: ['kafka:9092']
 })
 
-const consumer = kafka.consumer({ groupId: 'sensor_data' });
+const consumer = kafka.consumer({ groupId: 'live_update' });
 
 const express = require('express');
 const cors = require('cors');
@@ -21,8 +21,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
-
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5500;
 
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));
@@ -52,13 +51,13 @@ io.sockets.on('connection', async (socket) => {
             console.log(`emitting to ${type}`)
 
             if (type == "pressure") {
-                socket.emit("pressure", data)
+                socket.broadcast.emit("pressure", data)
             } 
             else if (type == "leakage") {
-                socket.emit("leakage", data)
+                socket.broadcast.emit("leakage", data)
             } 
             else if (type == "quality") {
-                socket.emit("quality", data)
+                socket.broadcast.emit("quality", data)
             }
         }
     });

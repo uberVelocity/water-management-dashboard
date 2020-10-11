@@ -57,13 +57,13 @@ services:
       - bridge-network
     restart: always
   
-  # # Kafka Consumers
-  # consumerdb:
-  #   container_name: consumerdb
-  #   build: consumer/consumerdb
-  #   networks: 
-  #     - bridge-network
-  #   restart: always
+  # Kafka Consumers
+  consumerdb:
+    container_name: consumerdb
+    build: consumer/consumerdb
+    networks: 
+      - bridge-network
+    restart: always
 
   # Frontend
   frontend:
@@ -77,15 +77,24 @@ services:
 
   # Backend serving the Frontend
   backend:
-    container_name: backend
     build: backend/
     networks: 
       - bridge-network
-    # depends_on:
-    #   - cassandra
+    depends_on:
+      - cassandra
     restart: always
-    ports: 
+    ports:
+      - '5001-5003:5001'
+
+  # Backend load balancer
+  load-balancer:
+    container_name: load-balancer
+    build: load-balancer/
+    ports:
       - '5000:5000'
+    restart: always
+    networks:
+      - bridge-network
 
   # Live update socket service
   backend-updates:
@@ -95,44 +104,44 @@ services:
     restart: always
     build: backend-updates/
     ports:
-      - '5001:5001'
+      - '5500:5500'
 
-  # # Backend responsible for authentication
-  # backend-auth:
-  #   container_name: backend-auth
-  #   build: backend-auth/
-  #   networks:
-  #     - bridge-network
-  #   depends_on:
-  #     - mongo
-  #   ports: 
-  #     - '4000:4000'
-  #   restart: always
+  # Backend responsible for authentication
+  backend-auth:
+    container_name: backend-auth
+    build: backend-auth/
+    networks:
+      - bridge-network
+    depends_on:
+      - mongo
+    ports: 
+      - '4000:4000'
+    restart: always
 
-  # # Database for storing user information
-  # mongo:
-  #   build: mongo/
-  #   container_name: mongo
-  #   networks: 
-  #     - bridge-network
-  #   environment:
-  #     - MONGO_INITDB_DATABASE=auth_db
-  #   volumes: 
-  #     - ./mongo/mongodata:/data/db
-  #   ports:
-  #     - '27017-27019:27017-27019'
-  #   restart: always
+  # Database for storing user information
+  mongo:
+    build: mongo/
+    container_name: mongo
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - ./mongo/mongodata:/data/db
+    ports:
+      - '27017-27019:27017-27019'
+    restart: always
 
-  # cassandra:
-  #   container_name: cassandra
-  #   build: cassandra/
-  #   networks: 
-  #     - bridge-network
-  #   expose:
-  #     - 7000
-  #     - 7001
-  #     - 7199
-  #     - 9042
-  #     - 9160
-  #   restart: always
+  cassandra:
+    container_name: cassandra
+    build: cassandra/
+    networks: 
+      - bridge-network
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
 

@@ -20,7 +20,12 @@ const sensor = require('../routes/api/sensor');
 app.use('/api/status', status);
 app.use('/api/sensor', sensor);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
+
+app.get('/', (req, res) => {
+    console.log('received GET request from FRONTEND through NGINX');
+    res.status(200).send('hello');
+});
 
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));
