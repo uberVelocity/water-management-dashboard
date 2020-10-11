@@ -52,7 +52,6 @@
           this.$store.dispatch("STORE_PT_SENSORS", data);
         }
         */
-
         // eslint-disable-next-line no-console
         console.log(data);
       }
