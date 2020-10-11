@@ -1,7 +1,7 @@
 FROM node:10
 
 # Create app directory
-WORKDIR consumer
+WORKDIR backend-updates
 
 # Install app dependencies
 COPY package*.json ./
@@ -12,4 +12,4 @@ RUN npm install
 COPY . .
 
 # Run commands
-CMD ["node", "consumer.js"]
+CMD ["node", "server/index.js"]

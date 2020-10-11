@@ -1,55 +1,40 @@
-import axios from 'axios';
+// import axios from 'axios';
 
-const url = 'http://localhost:5000/api/status';
+// const url = 'http://localhost:5000/api/status';
 
 const state = {
-    status: undefined,
-    sensors: []
+    pt_sensors: null,
+    leak_sensors: null
 };
 
 const getters = {
-    getSensors: state => {
-        return state.sensors
+    PT_SENSORS : state => {
+        return state.pt_sensors;
     },
-    getStatus: state => {
-        return state.status
+    LEAK_SENSORS : state => {
+        return state.leak_sensors;
     }
 };
 
-const actions = {
-    async fetchStatus({ commit }) {
-        const response = await axios.get(url);
-        commit('setStatus', response.data);
-    },
-
-    // Retrieve all sensors from the database
-    async fetchSensors({ commit }) {
-        // TODO: Insert API call to backend to retrieve sensors (make function async)
-        // const response = await axios.get(url)
-        const dummyData = [{
-            id: '1',
-            state: 'Online',
-            values: [10, 20, 30, 40, 50, 60]
-          },
-          {
-            id: '2',
-            state: 'Online',
-            values: [10, 20, 30, 40, 50, 60]
-          },
-          {
-            id: '3',
-            state: 'Offline',
-            values: [10, 60, 30, 40, 50, 60]
-          },
-        ]
-        commit('setSensors', dummyData);
-    },
-};
-
 const mutations = {
-    setSensors: (state, sensors) => (state.sensors = sensors),
-    setStatus: (state, status) => (state.status = status)
+    SET_PT_SENSORS: (state, payload) => (state.pt_sensors = payload),
+    SET_LEAK_SENSORS: (state, payload) => (state.leak_sensors = payload)
 };
+
+const actions = {
+    STORE_PT_SENSORS : (context, payload) => {
+        // process sensor data
+        // store sensor data
+        context.commit("SET_PT_SENSORS", payload);
+    },
+    STORE_LEAK_SENSORS : (context, payload) => {
+        // process sensor data
+        // store sensor data
+        context.commit("SET_LEAK_SENSORS", payload);
+    },
+};
+
+
 
 export default {
     state,

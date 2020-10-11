@@ -19,7 +19,7 @@ export default {
         options: {
           colors: ['#3e3ea3', '#333333', '#ac3a43'],
           chart: {
-            id: 'vuechart-example',
+            id: 'line-chart',
           },
           dataLabels: {
             enabled: false

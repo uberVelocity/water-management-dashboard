@@ -1,11 +1,11 @@
 FROM python:3
 
-WORKDIR sensors
+WORKDIR qualitysensor
 
-COPY sensor1.py ./
+COPY qualitySensor.py ./
 COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python","sensor1.py"]
+CMD ["python","qualitySensor.py"]
 
