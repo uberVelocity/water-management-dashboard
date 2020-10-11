@@ -46,7 +46,7 @@
       },
       // Fired when the server sends something on the "pressure" channel.
       pressure(data) {
-        data = data.map(e => ({x: e.ts, y: e.pressure}));
+        // data = data.map(e => ({x: e.ts, y: e.pressure}));
         /*
         if (data.type == 'pt') {
           this.$store.dispatch("STORE_PT_SENSORS", data);
