@@ -44,10 +44,6 @@
       disconnect() {
         this.isConnected = false;
       },
-      pressure(data) {
-        data = data.map(e => ({x: e.ts, y: e.pressure}));
-        console.log(data);
-      },
       // Fired when the server sends something on the "temperature" channel.
       temperature(data) {
         data = data.map(e => ({x: e.ts, y: e.temperature}));
