@@ -69,7 +69,3 @@ io.sockets.on('disconnect', (socket) => {
     console.log(`a user has disconnected: ${connections.length} connected`);
 });
 
-
-
-
-
