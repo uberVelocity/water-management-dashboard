@@ -1,0 +1,25 @@
+{
+  "name": "backend-updates",
+  "version": "1.0.0",
+<<<<<<< HEAD
+  "description": "Sends live data via socket to Frontend.",
+=======
+  "description": "Consumes Kafka and live updates the frontend through a socket connection.",
+>>>>>>> live-updates
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+<<<<<<< HEAD
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+=======
+    "kafkajs": "^1.14.0",
+    "socket.io": "^2.3.0"
+>>>>>>> live-updates
+  }
+}
