@@ -6,7 +6,8 @@
         <div class="charts">
           <div class="columns">
             <div class="column">
-              <LineChart sensorType="pressure"/>
+              <LineChart sensorType="pressure" />
+              <LineChart sensorType="temperature" />
             </div>
           </div>
         </div>
@@ -42,12 +43,6 @@ export default {
     },
     // Fired when the server sends something on the "pressure" channel.
     pressure(data) {
-      /* {
-          id, location, timestamp,type
-          variables {...}
-        }
-        */
-
       // eslint-disable-next-line no-console
       console.log(data);
       // store data in vuex store
@@ -58,14 +53,14 @@ export default {
     // Fired when the server sends something on the "leakage" channel.
     leakage(data) {
       // store data in vuex store
-      // this.$store.dispatch("PUSH_LK_DATA", data);
+      this.$store.dispatch("PUSH_LK_DATA", data);
       // eslint-disable-next-line no-console
       console.log(data);
     },
     // Fired when the server sends something on the "quality" channel.
     quality(data) {
       // store data in vuex store
-      // this.$store.dispatch("PUSH_QL_DATA", data);
+      this.$store.dispatch("PUSH_QL_DATA", data);
       // eslint-disable-next-line no-console
       console.log(data);
     },
