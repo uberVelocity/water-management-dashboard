@@ -7,8 +7,8 @@
         <div class="charts">
           <div class="columns">
             <div class="column">
-              <LineChart sensorType="pressure" />
               <LineChart sensorType="temperature" />
+              <LineChart sensorType="pressure" />
             </div>
           </div>
         </div>
