@@ -3,14 +3,25 @@ import axios from 'axios';
 const url = 'http://localhost:5000/';
 
 const state = {
-    pt_sensors: null,
-    leak_sensors: null,
+    ps_sensors_data: [],
+    lk_sensors_data: [],
+    ql_sensors_data: [],
     status: null
 };
 
 const getters = {
-    PT_SENSORS : state => {
-        return state.pt_sensors;
+    PS_SENSORS : state => {
+        // eslint-disable-next-line no-console
+        console.log('Getting sensors data from store');
+        // eslint-disable-next-line no-console
+        console.log(state.ps_sensors_data);
+        return state.ps_sensors_data;
+    },
+    LK_SENSORS : state => {
+        return state.lk_sensors_data;
+    },
+    QL_SENSORS : state => {
+        return state.ql_sensors_data;
     },
     LEAK_SENSORS : state => {
         return state.leak_sensors;
@@ -21,27 +32,30 @@ const getters = {
 };
 
 const mutations = {
-    SET_STATUS: (state, payload) => (state.status = payload),
-    SET_PT_SENSORS: (state, payload) => (state.pt_sensors = payload),
-    SET_LEAK_SENSORS: (state, payload) => (state.leak_sensors = payload)
+    PUSH_PS_DATA: (state, payload) => (state.ps_sensors_data.push(payload)),
+    PUSH_LK_DATA: (state, payload) => (state.lk_sensors_data.push(payload)),
+    PUSH_QL_DATA: (state, payload) => (state.ql_sensors_data.push(payload)),
 };
 
 const actions = {
+    PUSH_PS_DATA: (context, payload) => {
+        context.commit('PUSH_PS_DATA', payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Stored pressure data');
+    },
+    PUSH_LK_DATA: (context, payload) => {
+        context.commit("PUSH_LK_DATA", payload);
+    },
+    PUSH_QL_DATA: (context, payload) => {
+        context.commit("PUSH_QL_DATA", payload);
+    },
     FETCH_STATUS : async (context) => {
         const response = await axios.get(url)
         context.commit("SET_STATUS", response)
     },
-
-    STORE_PT_SENSORS : (context, payload) => {
-        // process sensor data
-        // store sensor data
-        context.commit("SET_PT_SENSORS", payload);
-    },
-    STORE_LEAK_SENSORS : (context, payload) => {
-        // process sensor data
-        // store sensor data
-        context.commit("SET_LEAK_SENSORS", payload);
-    },
+    SET_STATUS: (state, payload) => (state.status = payload),
+    SET_PT_SENSORS: (state, payload) => (state.pt_sensors = payload),
+    SET_LEAK_SENSORS: (state, payload) => (state.leak_sensors = payload)
 };
 
 export default {
