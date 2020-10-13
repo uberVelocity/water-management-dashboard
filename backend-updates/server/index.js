@@ -2,10 +2,10 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['kafka:9092']
+  brokers: ['kafka1:9091', 'kafka2:9092', 'kafka3:9093']
 })
 
-const consumer = kafka.consumer({ groupId: 'sensor_data' });
+const consumer = kafka.consumer({ groupId: 'live_update' });
 
 const express = require('express');
 const cors = require('cors');
@@ -21,8 +21,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
-
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5500;
 
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));

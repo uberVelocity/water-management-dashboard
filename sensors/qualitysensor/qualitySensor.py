@@ -32,7 +32,7 @@ def generate_data():
 
 
 # #Creating producer
-producer = KafkaProducer(bootstrap_servers=['kafka:9092'],
+producer = KafkaProducer(bootstrap_servers=['kafka1:9091', 'kafka2:9092', 'kafka3:9093'],
         value_serializer=lambda x: 
         dumps(x).encode('utf-8'))
 

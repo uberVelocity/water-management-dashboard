@@ -1,6 +1,7 @@
 <template>
   <div>
     <Nav />
+    <p>Status: {{this.status}}</p>
     <div class="chart">
       <template>
         <div class="charts">
@@ -19,7 +20,7 @@
 
 <script>
 import Nav from "@/components/Nav";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import LineChart from "@/charts/LineChart";
 export default {
   name: "Home",
@@ -66,9 +67,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["fetchSensors"]),
+    ...mapActions(['FETCH_STATUS']),
+    ...mapGetters(['STATUS']),
   },
+  async created() {
+    await this.FETCH_STATUS()
+    this.status = this.STATUS()
+  }
 };
+
 </script>
 
 <style scoped lang="scss">

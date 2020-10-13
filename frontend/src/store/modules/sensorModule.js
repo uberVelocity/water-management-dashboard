@@ -1,11 +1,12 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-// const url = 'http://localhost:5000/api/status';
+const url = 'http://localhost:5000/';
 
 const state = {
     ps_sensors_data: [],
     lk_sensors_data: [],
-    ql_sensors_data: []
+    ql_sensors_data: [],
+    status: null
 };
 
 const getters = {
@@ -21,6 +22,12 @@ const getters = {
     },
     QL_SENSORS : state => {
         return state.ql_sensors_data;
+    },
+    LEAK_SENSORS : state => {
+        return state.leak_sensors;
+    },
+    STATUS : state => {
+        return state.status;
     }
 };
 
@@ -42,9 +49,14 @@ const actions = {
     PUSH_QL_DATA: (context, payload) => {
         context.commit("PUSH_QL_DATA", payload);
     },
+    FETCH_STATUS : async (context) => {
+        const response = await axios.get(url)
+        context.commit("SET_STATUS", response)
+    },
+    SET_STATUS: (state, payload) => (state.status = payload),
+    SET_PT_SENSORS: (state, payload) => (state.pt_sensors = payload),
+    SET_LEAK_SENSORS: (state, payload) => (state.leak_sensors = payload)
 };
-
-
 
 export default {
     state,

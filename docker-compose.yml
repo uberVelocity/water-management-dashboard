@@ -6,7 +6,11 @@ networks:
 volumes:
   zookeeper_data:
     driver: local
-  kafka_data:
+  kafka1_data:
+    driver: local
+  kafka2_data:
+    driver: local
+  kafka3_data:
     driver: local
     
 services:
@@ -22,21 +26,90 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
     restart: always
 
-  kafka:
-    container_name: kafka
-    image: 'docker.io/bitnami/kafka:2-debian-10'
+  # kafka:
+  #   container_name: kafka
+  #   image: 'docker.io/bitnami/kafka:2-debian-10'
+  #   ports:
+  #     - '9092:9092'
+  #   networks: 
+  #     - bridge-network
+  #   volumes:
+  #     - 'kafka_data:/bitnami'
+  #   environment:
+  #     - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+  #     - ALLOW_PLAINTEXT_LISTENER=yes
+  #   depends_on:
+  #     - zookeeper
+  #   restart: always
+
+  # Kafka infrastructure
+  kafka1:
+    image: 'bitnami/kafka:2'
+    restart: always
+    container_name: kafka1
     ports:
-      - '9092:9092'
-    networks: 
+      - '9091:9091'
+      - '29091:29091'
+    networks:
       - bridge-network
-    volumes:
-      - 'kafka_data:/bitnami'
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9091,PLAINTEXT_HOST://:29091
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka1:9091,PLAINTEXT_HOST://kafka1:29091
+      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=3
+    volumes:
+      - 'kafka1_data:/bitnami'
     depends_on:
       - zookeeper
+    # logging:
+    #   driver: "none"
+
+  kafka2:
+    container_name: kafka2
     restart: always
+    image: 'bitnami/kafka:2'
+    ports:
+      - '9092:9092'
+      - '29092:29092'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka2:9092,PLAINTEXT_HOST://kafka2:29092
+    networks:
+      - bridge-network
+    volumes:
+      - 'kafka2_data:/bitnami'
+    depends_on:
+      - zookeeper
+    # logging:
+    #   driver: "none"
+
+  kafka3:
+    image: 'bitnami/kafka:2'
+    restart: always
+    container_name: kafka3
+    ports:
+      - '9093:9093'
+      - '29093:29092'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,PLAINTEXT_HOST://:29093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka3:9093,PLAINTEXT_HOST://kafka3:29093
+    networks:
+      - bridge-network
+    volumes:
+      - 'kafka3_data:/bitnami'
+    depends_on:
+      - zookeeper
+    # logging:
+    #   driver: "none"
+
 
   # Kafka Producers (sensors)
   leakagesensor:
@@ -57,13 +130,13 @@ services:
       - bridge-network
     restart: always
   
-  # # Kafka Consumers
-  # consumerdb:
-  #   container_name: consumerdb
-  #   build: consumer/consumerdb
-  #   networks: 
-  #     - bridge-network
-  #   restart: always
+  # Kafka Consumers
+  consumerdb:
+    container_name: consumerdb
+    build: consumer/consumerdb
+    networks: 
+      - bridge-network
+    restart: always
 
   # Frontend
   frontend:
@@ -77,15 +150,24 @@ services:
 
   # Backend serving the Frontend
   backend:
-    container_name: backend
     build: backend/
     networks: 
       - bridge-network
-    # depends_on:
-    #   - cassandra
+    depends_on:
+      - cassandra_1
     restart: always
-    ports: 
+    ports:
+      - '5001-5003:5001'
+
+  # Backend load balancer
+  load-balancer:
+    container_name: load-balancer
+    build: load-balancer/
+    ports:
       - '5000:5000'
+    restart: always
+    networks:
+      - bridge-network
 
   # Live update socket service
   backend-updates:
@@ -95,44 +177,129 @@ services:
     restart: always
     build: backend-updates/
     ports:
-      - '5001:5001'
+      - '5500:5500'
 
-  # # Backend responsible for authentication
-  # backend-auth:
-  #   container_name: backend-auth
-  #   build: backend-auth/
-  #   networks:
-  #     - bridge-network
-  #   depends_on:
-  #     - mongo
-  #   ports: 
-  #     - '4000:4000'
-  #   restart: always
+  # Backend responsible for authentication
+  backend-auth:
+    container_name: backend-auth
+    build: backend-auth/
+    networks:
+      - bridge-network
+    depends_on:
+      - mongo_1
+    ports: 
+      - '4000:4000'
+    restart: always
 
-  # # Database for storing user information
-  # mongo:
-  #   build: mongo/
-  #   container_name: mongo
-  #   networks: 
-  #     - bridge-network
-  #   environment:
-  #     - MONGO_INITDB_DATABASE=auth_db
-  #   volumes: 
-  #     - ./mongo/mongodata:/data/db
-  #   ports:
-  #     - '27017-27019:27017-27019'
-  #   restart: always
+  # Database for storing user information
+  mongo_1:
+    build: mongo-master/
+    container_name: mongo_1
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - ./data1/db:/data/db
+      - ./data1/configdb:/data/configdb
+      - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - '27011:27017'
+    expose:
+      - 27017
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
 
-  # cassandra:
-  #   container_name: cassandra
-  #   build: cassandra/
-  #   networks: 
-  #     - bridge-network
-  #   expose:
-  #     - 7000
-  #     - 7001
-  #     - 7199
-  #     - 9042
-  #     - 9160
-  #   restart: always
+  # Database for storing user information
+  mongo_2:
+    build: mongo/
+    container_name: mongo_2
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - ./data2/db:/data/db
+      - ./data2/configdb:/data/configdb
+    ports:
+      - '27012:21017'
+    expose:
+      - 27017
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
 
+  # Database for storing user information
+  mongo_3:
+    build: mongo/
+    container_name: mongo_3
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - ./data3/db:/data/db
+      - ./data3/configdb:/data/configdb
+    ports:
+      - '27013:21017'
+    expose:
+      - 27017
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
+
+  # Cassandra cluster containing three nodes
+  # replication factor = 3 (one copy of a row on each node)
+  cassandra_1:
+    container_name: cassandra_1
+    build: cassandra/
+    networks: 
+      - bridge-network
+    environment:
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=2048M
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
+    logging:
+      driver: none
+
+  cassandra_2:
+    container_name: cassandra_2
+    build: cassandra/
+    networks: 
+      - bridge-network
+    environment: 
+      - CASSANDRA_SEEDS=cassandra_1
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=2048M
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
+    logging:
+      driver: none
+
+  cassandra_3:
+    container_name: cassandra_3
+    build: cassandra/
+    networks: 
+      - bridge-network
+    environment:
+      - CASSANDRA_SEEDS=cassandra_1
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=2048M
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    restart: always
+    logging:
+      driver: none
