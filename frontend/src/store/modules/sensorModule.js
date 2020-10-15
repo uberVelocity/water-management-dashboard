@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://backend:5001/';
+const url = '/api/';
 
 const state = {
     ps_sensors_data: [],

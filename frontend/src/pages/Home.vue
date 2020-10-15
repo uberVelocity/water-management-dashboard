@@ -32,6 +32,7 @@ export default {
     return {
       isConnected: false,
       socket: undefined,
+      status: undefined
     };
   },
   sockets: {
