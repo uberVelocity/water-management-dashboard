@@ -1,0 +1,12 @@
+# Interesting points made during the guest lectures
+- [InfluxDB](https://www.influxdata.com/)
+- ["Retry storms" for distributed systems](https://devops.stackexchange.com/questions/898/how-to-avoid-retry-storms-in-distributed-services)
+- [Circuit breaker pattern](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern)
+- [Kubernetes Lens UI](https://k8slens.dev/)
+- [Bridge to Kubernetes](https://devblogs.microsoft.com/visualstudio/bridge-to-kubernetes-ga/#:~:text=Formerly%20known%20as%20Local%20Process,inheriting%20existing%20configuration%20from%20a)
+- [GitOps](https://www.cloudbees.com/gitops/what-is-gitops)
+- [The Falco Project](https://falco.org/)
+- [Image signing and verification](https://coreos.com/rkt/docs/latest/signing-and-verification-guide.html)
+- [The Notary Project](https://www.google.com/search?q=notary+project&oq=notary+project&aqs=chrome..69i57j0l5.1404j0j1&sourceid=chrome&ie=UTF-8)
+- [Telepresence](https://www.telepresence.io/)
+- [Cloud Native Computing Foundation](https://www.cncf.io/)
