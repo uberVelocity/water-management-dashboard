@@ -24,7 +24,9 @@ const port = process.env.PORT || 5001;
 
 app.get('/api', (req, res) => {
     console.log('received GET request from FRONTEND through NGINX');
-    res.status(200).send('hello');
+    res.status(200).json({
+        message: 'hello'
+    });
 });
 
 // Start listening for requests

@@ -35,6 +35,7 @@ const mutations = {
     PUSH_PS_DATA: (state, payload) => (state.ps_sensors_data.push(payload)),
     PUSH_LK_DATA: (state, payload) => (state.lk_sensors_data.push(payload)),
     PUSH_QL_DATA: (state, payload) => (state.ql_sensors_data.push(payload)),
+    SET_STATUS: (state, payload) => (state.status = payload)
 };
 
 const actions = {
@@ -51,11 +52,8 @@ const actions = {
     },
     FETCH_STATUS : async (context) => {
         const response = await axios.get(url)
-        context.commit("SET_STATUS", response)
-    },
-    SET_STATUS: (state, payload) => (state.status = payload),
-    SET_PT_SENSORS: (state, payload) => (state.pt_sensors = payload),
-    SET_LEAK_SENSORS: (state, payload) => (state.leak_sensors = payload)
+        context.commit("SET_STATUS", response.data.message)
+    }
 };
 
 export default {

@@ -71,8 +71,9 @@ export default {
     ...mapActions(['FETCH_STATUS']),
     ...mapGetters(['STATUS']),
   },
-  async created() {
+  async mounted() {
     await this.FETCH_STATUS()
+    // eslint-disable-next-line no-console
     this.status = this.STATUS()
   }
 };
