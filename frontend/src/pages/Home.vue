@@ -2,31 +2,20 @@
   <div>
     <Nav />
     <p>Status: {{this.status}}</p>
-    <div class="chart">
-      <template>
-        <div class="charts">
-          <div class="columns">
-            <div class="column">
-              <LineChart sensorType="pressure" />
-              <LineChart sensorType="temperature" />
-            </div>
-          </div>
-        </div>
-        <div></div>
-      </template>
-    </div>
+    <ChartGrid />
   </div>
 </template>
 
 <script>
 import Nav from "@/components/Nav";
+import ChartGrid from "@/components/ChartGrid";
 import { mapActions, mapGetters } from "vuex";
-import LineChart from "@/charts/LineChart";
+
 export default {
   name: "Home",
   components: {
     Nav,
-    LineChart,
+    ChartGrid,
   },
   data() {
     return {
@@ -44,8 +33,6 @@ export default {
     },
     // Fired when the server sends something on the "pressure" channel.
     pressure(data) {
-      // eslint-disable-next-line no-console
-      console.log(data);
       // store data in vuex store
       this.$store.dispatch("PUSH_PS_DATA", data);
       // eslint-disable-next-line no-console

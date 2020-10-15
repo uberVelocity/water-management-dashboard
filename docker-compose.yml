@@ -180,71 +180,71 @@ services:
       - '5500:5500'
 
   # Backend responsible for authentication
-  backend-auth:
-    container_name: backend-auth
-    build: backend-auth/
-    networks:
-      - bridge-network
-    depends_on:
-      - mongo_1
-    ports: 
-      - '4000:4000'
-    restart: always
+  # backend-auth:
+  #   container_name: backend-auth
+  #   build: backend-auth/
+  #   networks:
+  #     - bridge-network
+  #   depends_on:
+  #     - mongo_1
+  #   ports: 
+  #     - '4000:4000'
+  #   restart: always
 
-  # Database for storing user information
-  mongo_1:
-    build: mongo-master/
-    container_name: mongo_1
-    networks: 
-      - bridge-network
-    environment:
-      - MONGO_INITDB_DATABASE=auth_db
-    volumes: 
-      - ./data1/db:/data/db
-      - ./data1/configdb:/data/configdb
-      - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    ports:
-      - '27011:27017'
-    expose:
-      - 27017
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-    restart: always
+  # # Database for storing user information
+  # mongo_1:
+  #   build: mongo-master/
+  #   container_name: mongo_1
+  #   networks: 
+  #     - bridge-network
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=auth_db
+  #   volumes: 
+  #     - ./data1/db:/data/db
+  #     - ./data1/configdb:/data/configdb
+  #     - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  #   ports:
+  #     - '27011:27017'
+  #   expose:
+  #     - 27017
+  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+  #   restart: always
 
-  # Database for storing user information
-  mongo_2:
-    build: mongo/
-    container_name: mongo_2
-    networks: 
-      - bridge-network
-    environment:
-      - MONGO_INITDB_DATABASE=auth_db
-    volumes: 
-      - ./data2/db:/data/db
-      - ./data2/configdb:/data/configdb
-    ports:
-      - '27012:21017'
-    expose:
-      - 27017
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-    restart: always
+  # # Database for storing user information
+  # mongo_2:
+  #   build: mongo/
+  #   container_name: mongo_2
+  #   networks: 
+  #     - bridge-network
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=auth_db
+  #   volumes: 
+  #     - ./data2/db:/data/db
+  #     - ./data2/configdb:/data/configdb
+  #   ports:
+  #     - '27012:21017'
+  #   expose:
+  #     - 27017
+  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+  #   restart: always
 
-  # Database for storing user information
-  mongo_3:
-    build: mongo/
-    container_name: mongo_3
-    networks: 
-      - bridge-network
-    environment:
-      - MONGO_INITDB_DATABASE=auth_db
-    volumes: 
-      - ./data3/db:/data/db
-      - ./data3/configdb:/data/configdb
-    ports:
-      - '27013:21017'
-    expose:
-      - 27017
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-    restart: always
+  # # Database for storing user information
+  # mongo_3:
+  #   build: mongo/
+  #   container_name: mongo_3
+  #   networks: 
+  #     - bridge-network
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=auth_db
+  #   volumes: 
+  #     - ./data3/db:/data/db
+  #     - ./data3/configdb:/data/configdb
+  #   ports:
+  #     - '27013:21017'
+  #   expose:
+  #     - 27017
+  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+  #   restart: always
 
   # Cassandra cluster containing three nodes
   # replication factor = 3 (one copy of a row on each node)
@@ -255,7 +255,7 @@ services:
       - bridge-network
     environment:
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=2048M
+      - MAX_HEAP_SIZE=1024M
     expose:
       - 7000
       - 7001
@@ -274,7 +274,7 @@ services:
     environment: 
       - CASSANDRA_SEEDS=cassandra_1
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=2048M
+      - MAX_HEAP_SIZE=1024M
     expose:
       - 7000
       - 7001
@@ -293,7 +293,7 @@ services:
     environment:
       - CASSANDRA_SEEDS=cassandra_1
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=2048M
+      - MAX_HEAP_SIZE=1024M
     expose:
       - 7000
       - 7001

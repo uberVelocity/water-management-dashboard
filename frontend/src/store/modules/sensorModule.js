@@ -12,19 +12,24 @@ const state = {
 const getters = {
     PS_SENSORS : state => {
         // eslint-disable-next-line no-console
-        console.log('Getting sensors data from store');
+        console.log('Getting pressure sensor data from store');
         // eslint-disable-next-line no-console
         console.log(state.ps_sensors_data);
         return state.ps_sensors_data;
     },
     LK_SENSORS : state => {
+        // eslint-disable-next-line no-console
+        console.log('Getting leakage sensor data from store');
+        // eslint-disable-next-line no-console
+        console.log(state.lk_sensors_data);
         return state.lk_sensors_data;
     },
     QL_SENSORS : state => {
+        // eslint-disable-next-line no-console
+        console.log('Getting quality sensor data from store');
+        // eslint-disable-next-line no-console
+        console.log(state.ql_sensors_data);
         return state.ql_sensors_data;
-    },
-    LEAK_SENSORS : state => {
-        return state.leak_sensors;
     },
     STATUS : state => {
         return state.status;
@@ -45,9 +50,13 @@ const actions = {
     },
     PUSH_LK_DATA: (context, payload) => {
         context.commit("PUSH_LK_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Stored leakage data');
     },
     PUSH_QL_DATA: (context, payload) => {
         context.commit("PUSH_QL_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Stored quality data');
     },
     FETCH_STATUS : async (context) => {
         const response = await axios.get(url)
