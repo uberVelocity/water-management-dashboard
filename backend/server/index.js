@@ -22,7 +22,7 @@ app.use('/api/sensor', sensor);
 
 const port = process.env.PORT || 5001;
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     console.log('received GET request from FRONTEND through NGINX');
     res.status(200).send('hello');
 });

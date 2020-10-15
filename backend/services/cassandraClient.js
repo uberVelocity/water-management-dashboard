@@ -2,7 +2,7 @@ function cassandraClient() {
     console.log('Creating Cassandra Client...');
     const localDatacenter = 'datacenter1';
     const cassandra = require('cassandra-driver');
-    const contactPoints = ['cassandra_1', 'cassandra_2', 'cassandra_3'];
+    const contactPoints = ['cassandra_1', 'cassandra_2', 'cassandra_3']; // TODO: Change contact points to "cassandra" in Kube
     const loadBalancingPolicy = new cassandra.policies.loadBalancing.DCAwareRoundRobinPolicy(localDatacenter);
     const clientOptions = {
         policies: {
