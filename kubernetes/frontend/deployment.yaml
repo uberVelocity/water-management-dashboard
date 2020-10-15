@@ -15,9 +15,9 @@ spec:
       containers:
       - name: 'frontend'
         image: ubervelocity/wmd-frontend
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "100m"
+        # resources:
+        #   limits:
+        #     memory: "512Mi"
+        #     cpu: "100m"
         ports:
         - containerPort: 80

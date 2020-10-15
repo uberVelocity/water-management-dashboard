@@ -6,7 +6,7 @@ router.get('/', connectCassandra, async (req, res) => {
     console.log(`received GET request sensor`);
     const cassandraClient = res.client;
     console.log(cassandraClient);
-    const query = 'SELECT * FROM sensor1';
+    const query = 'SELECT * FROM ptSensor';
     let data = undefined;
     await new Promise((resolve, reject) => {
         cassandraClient.execute(query, function (err, result) {

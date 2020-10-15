@@ -15,9 +15,9 @@ spec:
       containers:
       - name: backend
         image: ubervelocity/wmd-backend
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        # resources:
+        #   limits:
+        #     memory: "512Mi"
+        #     cpu: "2"
         ports:
         - containerPort: 5001
