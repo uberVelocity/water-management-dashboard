@@ -51,7 +51,13 @@ const actions = {
         context.commit("PUSH_QL_DATA", payload);
     },
     FETCH_STATUS : async (context) => {
+        // eslint-disable-next-line no-console
+        console.log('FETCHING STATUS')
         const response = await axios.get(url)
+        // eslint-disable-next-line no-console
+        console.log('GOT RESPONSE')
+        // eslint-disable-next-line no-console
+        console.log(response)
         context.commit("SET_STATUS", response.data.message)
     }
 };
