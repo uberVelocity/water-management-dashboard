@@ -53,7 +53,6 @@ async function insertData(query,data) {
   
 }
 
-
 async function consume(){
   await consumer.connect()  
   await consumer.subscribe({ topic: 'sensor_data', fromBeginning: true })
