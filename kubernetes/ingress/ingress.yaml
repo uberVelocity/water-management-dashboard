@@ -24,10 +24,5 @@ spec:
           - path: /socket.io
             pathType: Prefix
             backend:
-              serviceName: backend-updates
-              servicePort: 5500
-          - path: /test
-            pathType: Prefix
-            backend:
-              serviceName: backend-updates
-              servicePort: 5500
+              serviceName: backend
+              servicePort: 5001
