@@ -15,7 +15,7 @@ router.get('/', connectCassandra, async (req, res) => {
             if (!err) {
                 console.log('Successful query!');
                 data = result.rows.map(el => {
-                    return {'id': el['id'], 'timestamp': el['timestamp'], 'type': el['type'],
+                    return {'id': el['id'], 'timestamp': el['ts'], 'type': 'pressure',
                     'location': el['location'],
                     'variables': {
                         'temperature': el['temperature'],

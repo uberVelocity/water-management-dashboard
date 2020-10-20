@@ -1,10 +1,10 @@
 <template>
   <div class="columns">
     <div class="column">
-      <LineChart sensorType="pressure"
-        title="Testing pressure out"
-        xLabel="myTime"
-        yLabel="myPressure"
+      <LineChart
+        title="Pressure over time"
+        xLabel="Date & Time"
+        yLabel="Pressure"
         :data="getSeries"
       />
     </div>
@@ -20,12 +20,12 @@ export default {
     getSeries() {
       const sensorData = this.$store.getters.PS_SENSORS;
 
-        // y
+      // y
       let seriesData = sensorData.map((el) => {
-        return el["variables"]["pressure"];
+        return el["variables"]["pressure"].toFixed(2);
       });
 
-        // x
+      // x
       const timestampList = sensorData.map((el) => {
         const unix_dt = new Date(el["timestamp"] * 1000);
         const time = unix_dt.toLocaleTimeString("en-GB");

@@ -11,7 +11,6 @@ export default {
       VueApexCharts
   },
   props : {
-    sensorType : String,
     title: String,
     xLabel: String,
     yLabel: String,

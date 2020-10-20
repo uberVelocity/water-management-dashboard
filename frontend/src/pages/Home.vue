@@ -58,7 +58,7 @@ export default {
     ...mapActions(['FETCH_STATUS']),
     ...mapGetters(['STATUS']),
   },
-  async created() {
+  async mounted() {
     // await this.FETCH_STATUS();
     // this.status = this.STATUS();
 
