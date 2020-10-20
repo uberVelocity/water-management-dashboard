@@ -46,6 +46,8 @@ export default {
         return { x: timestampList[i], y: e };
       });
 
+      // eslint-disable-next-line no-console
+      console.log(res);
       return res;
     },
   },

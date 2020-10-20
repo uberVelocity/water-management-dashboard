@@ -59,6 +59,7 @@ services:
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9091,PLAINTEXT_HOST://:29091
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka1:9091,PLAINTEXT_HOST://kafka1:29091
       - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=3
+      - KAFKA_HEAP_OPTS="-Xmx2G -Xms2G"
     volumes:
       - 'kafka1_data:/bitnami'
     depends_on:
@@ -79,6 +80,7 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka2:9092,PLAINTEXT_HOST://kafka2:29092
+      - KAFKA_HEAP_OPTS="-Xmx2G -Xms2G"
     networks:
       - bridge-network
     volumes:
@@ -101,6 +103,7 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,PLAINTEXT_HOST://:29093
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka3:9093,PLAINTEXT_HOST://kafka3:29093
+      - KAFKA_HEAP_OPTS="-Xmx2G -Xms2G"
     networks:
       - bridge-network
     volumes:
@@ -131,12 +134,12 @@ services:
     restart: always
   
   # Kafka Consumers
-  consumerdb:
-    container_name: consumerdb
-    build: consumer/consumerdb
-    networks: 
-      - bridge-network
-    restart: always
+  # consumerdb:
+  #   container_name: consumerdb
+  #   build: consumer/consumerdb
+  #   networks: 
+  #     - bridge-network
+  #   restart: always
 
   # Frontend
   frontend:
@@ -255,7 +258,7 @@ services:
       - bridge-network
     environment:
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=1024M
+      - MAX_HEAP_SIZE=2048M
     expose:
       - 7000
       - 7001
@@ -274,7 +277,7 @@ services:
     environment: 
       - CASSANDRA_SEEDS=cassandra_1
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=1024M
+      - MAX_HEAP_SIZE=2048M
     expose:
       - 7000
       - 7001
@@ -293,7 +296,7 @@ services:
     environment:
       - CASSANDRA_SEEDS=cassandra_1
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=1024M
+      - MAX_HEAP_SIZE=2048M
     expose:
       - 7000
       - 7001

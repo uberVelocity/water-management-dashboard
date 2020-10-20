@@ -60,6 +60,10 @@ export default {
       },
     }
   },
+  created() {
+    // eslint-disable-next-line no-console
+    console.log(this.data);
+  }
   // mounted() {
   //   this.series = [{
   //     data: this.$store.getters.PS_SENSORS
