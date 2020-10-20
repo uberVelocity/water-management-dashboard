@@ -16,11 +16,6 @@ import LineChart from "@/charts/LineChart";
 export default {
   name: "AdminMenu",
   components: { LineChart },
-  data() {
-    return {
-      pressureData: [],
-    };
-  },
   computed: {
     getSeries() {
       const sensorData = this.$store.getters.PS_SENSORS;
@@ -37,8 +32,6 @@ export default {
         const date = unix_dt.toLocaleDateString("en-GB");
 
         let datetime = date + " " + time;
-        // eslint-disable-next-line no-console
-        console.log(datetime);
         return datetime;
       });
 
@@ -46,6 +39,8 @@ export default {
         return { x: timestampList[i], y: e };
       });
 
+      // eslint-disable-next-line no-console
+      console.log('Plotting ...');
       // eslint-disable-next-line no-console
       console.log(res);
       return res;

@@ -1,5 +1,5 @@
 <template>
-    <VueApexCharts width="500" type="line" :options="options" :series="series"></VueApexCharts>
+    <VueApexCharts width="500" type="line" :options="options" :series="getSeries"></VueApexCharts>
 </template>
 
 <script>
@@ -19,12 +19,6 @@ export default {
   },
   data() {
     return {
-      series: [
-        {
-          name: this.title,
-          data: this.data
-        },
-      ],
       options: {
         xaxis: {
           type: 'category',
@@ -60,23 +54,16 @@ export default {
       },
     }
   },
-  created() {
-    // eslint-disable-next-line no-console
-    console.log(this.data);
+  computed: {
+    getSeries() {
+      return [
+        {
+          name: this.title,
+          data: this.data
+        },
+      ];
+    }
   }
-  // mounted() {
-  //   this.series = [{
-  //     data: this.$store.getters.PS_SENSORS
-  //   }]
-  // },
-  // computed : {
-  //   createSeries() {
-  //     const res = this.x.map(function(e, i) {
-  //       return {x: e, y: y[i]};
-  //     });
-  //     return [{data: res, name: this.title}];
-  //   }
-  // },
 }
 </script>
 

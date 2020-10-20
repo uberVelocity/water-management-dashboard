@@ -40,6 +40,9 @@ const mutations = {
     PUSH_PS_DATA: (state, payload) => (state.ps_sensors_data.push(payload)),
     PUSH_LK_DATA: (state, payload) => (state.lk_sensors_data.push(payload)),
     PUSH_QL_DATA: (state, payload) => (state.ql_sensors_data.push(payload)),
+    SET_PS_DATA: (state, payload) => (state.ps_sensors_data = payload),
+    SET_LK_DATA: (state, payload) => (state.lk_sensors_data = payload),
+    SET_QL_DATA: (state, payload) => (state.ql_sensors_data = payload),
 };
 
 const actions = {
@@ -58,13 +61,26 @@ const actions = {
         // eslint-disable-next-line no-console
         console.log('Store: Stored quality data');
     },
+    SET_PS_DATA: (context, payload) => {
+        context.commit("SET_PS_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Set pressure data');
+    },
+    SET_LK_DATA: (context, payload) => {
+        context.commit("SET_LK_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Set leakage data');
+    },
+    SET_QL_DATA: (context, payload) => {
+        context.commit("SET_QL_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Set quality data');
+    },
     FETCH_STATUS : async (context) => {
         const response = await axios.get(url)
         context.commit("SET_STATUS", response)
     },
     SET_STATUS: (state, payload) => (state.status = payload),
-    SET_PT_SENSORS: (state, payload) => (state.pt_sensors = payload),
-    SET_LEAK_SENSORS: (state, payload) => (state.leak_sensors = payload)
 };
 
 export default {

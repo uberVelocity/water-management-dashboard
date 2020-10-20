@@ -8,6 +8,7 @@
 
 <script>
 import Nav from "@/components/Nav";
+import axios from "axios";
 import ChartGrid from "@/components/ChartGrid";
 import { mapActions, mapGetters } from "vuex";
 
@@ -58,9 +59,20 @@ export default {
     ...mapGetters(['STATUS']),
   },
   async created() {
-    await this.FETCH_STATUS()
-    this.status = this.STATUS()
-  }
+    // await this.FETCH_STATUS();
+    // this.status = this.STATUS();
+
+    // make call for historical data
+    const response = await axios.get('http://localhost:5000/api/sensor/');
+    // eslint-disable-next-line no-console
+    console.log('MADE CALL FOR HISTORY');
+    // eslint-disable-next-line no-console
+    console.log(response.data['data']);
+    const history_data = response.data['data'];
+
+    // set store data with result
+    this.$store.dispatch("SET_PS_DATA", history_data);
+  },
 };
 
 </script>
