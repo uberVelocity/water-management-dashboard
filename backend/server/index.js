@@ -71,6 +71,7 @@ io.sockets.on('connection', async (socket) => {
             console.log(`emitting to ${type}`)
 
             if (type == "pressure") {
+                console.log('emitting to pressure for sure')
                 socket.broadcast.emit("pressure", data)
             } 
             else if (type == "leakage") {

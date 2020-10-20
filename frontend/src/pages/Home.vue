@@ -39,6 +39,8 @@ export default {
     connect() {
       // Fired when the socket connects.
       this.isConnected = true;
+      // eslint-disable-next-line no-console
+      console.log('Connected socket!')
     },
     disconnect() {
       this.isConnected = false;
