@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: kafka
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kafka
@@ -29,7 +29,7 @@ spec:
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092,PLAINTEXT_HOST://:29092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://$(KAFKA_POD_IP):9092,PLAINTEXT_HOST://kafka:29092"
+              value: "PLAINTEXT://$(KAFKA_POD_IP):9092,PLAINTEXT_HOST://$(KAFKA_POD_IP):29092"
             # - name: KAFKA_CFG_DEFAULT_REPLICATION_FACTOR
             #   value: "3"
         # resources:
