@@ -63,8 +63,8 @@ services:
       - 'kafka1_data:/bitnami'
     depends_on:
       - zookeeper
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "none"
 
   kafka2:
     container_name: kafka2
@@ -85,8 +85,8 @@ services:
       - 'kafka2_data:/bitnami'
     depends_on:
       - zookeeper
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "none"
 
   kafka3:
     image: 'bitnami/kafka:2'
@@ -107,8 +107,8 @@ services:
       - 'kafka3_data:/bitnami'
     depends_on:
       - zookeeper
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "none"
 
 
   # # Kafka Producers (sensors)
@@ -137,6 +137,8 @@ services:
     networks: 
       - bridge-network
     restart: always
+    logging:
+      driver: "none"
 
   # Frontend
   frontend:
@@ -158,6 +160,8 @@ services:
     restart: always
     ports:
       - '5001-5003:5001'
+    logging:
+      driver: "none"
 
   # Backend load balancer
   load-balancer:
@@ -209,6 +213,8 @@ services:
       - 27017
     # entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
+    logging:
+      driver: "none"
 
   # # Database for storing user information
   # mongo_2:
@@ -263,8 +269,8 @@ services:
       - 9042
       - 9160
     restart: always
-    # logging:
-    #   driver: none
+    logging:
+      driver: none
 
   # cassandra_2:
   #   container_name: cassandra_2
