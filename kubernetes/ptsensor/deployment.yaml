@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ptsensor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ptsensor
+  template:
+    metadata:
+      labels:
+        app: ptsensor
+    spec:
+      containers:
+      - name: ptsensor
+        image: ubervelocity/wmd-ptsensor
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5050

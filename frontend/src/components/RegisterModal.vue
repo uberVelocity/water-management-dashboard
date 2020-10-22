@@ -61,9 +61,7 @@ export default {
     },
     methods : {
         async registerUser() {
-
-            const urlRegister = 'http://localhost:4000/api/auth/registerUser';
-
+            const urlRegister = '/api/auth/registerUser';
             let response = undefined;
 
             try {
