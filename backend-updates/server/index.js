@@ -2,7 +2,7 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['kafka1:9091', 'kafka2:9092', 'kafka3:9093']
+  brokers: ['kafka:9092']
 })
 
 const consumer = kafka.consumer({ groupId: 'live_update' });
@@ -20,6 +20,13 @@ app.use(bodyParser.json());
 // Setup cors and express
 app.use(cors());
 app.use(express.json());
+
+app.get('/test', (req, res) => {
+    console.log('received get request!')
+    res.status(200).json({
+        message: 'socket server is reachable'
+    });
+});
 
 const port = process.env.PORT || 5500;
 

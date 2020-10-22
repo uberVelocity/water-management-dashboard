@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5000/';
+const url = '/api/';
 
 const state = {
     ps_sensors_data: [],
@@ -77,6 +77,8 @@ const actions = {
         console.log('Store: Set quality data');
     },
     FETCH_STATUS : async (context) => {
+        // eslint-disable-next-line no-console
+        console.log('FETCHING STATUS')
         const response = await axios.get(url)
         context.commit("SET_STATUS", response)
     },

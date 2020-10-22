@@ -43,7 +43,7 @@
 
 <script>
 import axios from 'axios';
-const urlGet = 'http://localhost:4000/api/auth/currentUser';
+const urlGet = '/api/auth/currentUser';
 
 export default {
     name: 'LoginBtn',

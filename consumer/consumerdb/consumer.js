@@ -2,12 +2,12 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['kafka1:9091', 'kafka2:9092', 'kafka3:9093']
+  brokers: ['kafka:9092']
 })
 // Cassandra variables
 const localDatacenter = 'datacenter1';
 const cassandra = require('cassandra-driver');
-const contactPoints = ['cassandra_1', 'cassandra_2', 'cassandra_3'];
+const contactPoints = ['cassandra'];
 const loadBalancingPolicy = new cassandra.policies.loadBalancing.DCAwareRoundRobinPolicy(localDatacenter);
 const clientOptions = {
   policies: {
@@ -52,7 +52,6 @@ async function insertData(query,data) {
     });
   
 }
-
 
 async function consume(){
   await consumer.connect()  
