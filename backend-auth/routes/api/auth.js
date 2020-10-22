@@ -5,13 +5,14 @@ const jwt_authorization = require('../../middleware/jwt_authorization');
 const { User, validateUser } = require('../../mongo_models/User');
 const bcrypt = require('bcrypt');
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     console.log('Received request: LOGIN USER');
-    
+    console.log(req)
+
     // Check if user exists
-    let user = await User.findOne({ email: req.body.email});
+    let user = await User.findOne({email: req.body.email});
     console.log('User found:');
-    console.log(req.body);
+    console.log(user);
     if (!user) return res.status(400).send("User does not exist");
 
     // Hash the password!

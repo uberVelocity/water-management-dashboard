@@ -58,14 +58,17 @@ export default {
     methods: {
         async login() {
 
-            const config = {
-                email: this.email,
-                password: this.password
-            }
+            // eslint-disable-next-line no-console
+            console.log('Message LogIn');
+            // eslint-disable-next-line no-console
+            console.log(this.email + this.password);
 
             let response = undefined;
             try {
-                response = await axios.get(urlGet, config)
+                response = await axios.post(urlGet, {
+                    email: this.email,
+                    password: this.password
+                })
             } catch (e) {
                 // eslint-disable-next-line no-console
                 console.log(e);
@@ -74,6 +77,9 @@ export default {
             if (response !== undefined && response.status === 200) {
                 // eslint-disable-next-line no-console
                 console.log(response.data);
+
+                localStorage.setItem('authorization', response.headers['authorization']);
+
                 Toast.open({
                     message: 'Successfully logged in!',
                     type: 'is-success'
