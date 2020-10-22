@@ -5,7 +5,8 @@
             Sign up
         </button>
 
-        <b-modal 
+        <b-modal
+            id="reg_modal"
             v-model="isComponentModalActive"
             has-modal-card
             trap-focus
@@ -46,6 +47,7 @@
 
 <script>
 import axios from 'axios';
+import { ToastProgrammatic as Toast } from 'buefy'
 
 export default {
     name: 'RegisterModal',
@@ -59,21 +61,41 @@ export default {
     },
     methods : {
         async registerUser() {
+
             const urlRegister = 'http://localhost:4000/api/auth/registerUser';
 
-            // TODO: VALIDATE FIELDS BEFORE BACKEND CALL
+            let response = undefined;
 
-            const response = await axios.post(urlRegister, {
-                username : this.username,
-                email : this.email,
-                password : this.password
-            });
-            if (response.status === 200) {
+            try {
+                response = await axios.post(urlRegister, {
+                    username : this.username,
+                    email : this.email,
+                    password : this.password
+                });
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.log(e);
+            }
+
+            if (response !== undefined && response.status === 200) {
                 // eslint-disable-next-line no-console
                 console.log(response.data);
                 localStorage.setItem('authorization', response.headers['authorization']);
+
+                // close modal
+                this.isComponentModalActive = false;
+
+                // open success toast
+                Toast.open({
+                    message: 'Successfully logged in!',
+                    type: 'is-success'
+                });
             } else {
                 alert(response);
+                Toast.open({
+                    message: 'Incorrect data format',
+                    type: 'is-danger'
+                });
             }
         }
     }

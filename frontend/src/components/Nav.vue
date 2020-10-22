@@ -22,6 +22,7 @@
   import LoginBtn from '@/components/LoginBtn.vue';
   import RegisterModal from '@/components/RegisterModal.vue';
   import axios from 'axios';
+  import { ToastProgrammatic as Toast } from 'buefy'
 
   export default {
     name: 'Nav',
@@ -36,19 +37,28 @@
               authorization : localStorage.getItem('authorization')
           }
         }
+        let response = undefined;
 
-        // eslint-disable-next-line no-console
-        console.log('Button pressed, sending request!');
-        const response = await axios.get('http://localhost:4000/api/auth/admin', config);
-        if (response.status === 200) {
-            // eslint-disable-next-line no-console
-            console.log(response.data);
-            this.$router.push('/admin')
-        } else {
-            // eslint-disable-next-line no-console
-            console.error(response);
-            this.$buefy.toast.open('You are not authorized to access this page!\nPlease log in!');
+        try {
+          response = await axios.get('http://localhost:4000/api/auth/admin', config);
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.log(e);
         }
+
+        if (response !== undefined && response.status === 200) {
+          // eslint-disable-next-line no-console
+          console.log(response.data);
+          this.$router.push('/admin')
+        } else {
+          // eslint-disable-next-line no-console
+          console.error(response);
+          Toast.open({
+            message: 'You are not authorized to access this page!\nPlease log in!',
+            type: 'is-danger'
+          });
+        }
+        
       },
     }
   }
