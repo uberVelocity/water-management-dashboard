@@ -44,8 +44,8 @@
 
 <script>
 import axios from 'axios';
+const urlGet = 'http://localhost:4000/api/auth/login';
 import { ToastProgrammatic as Toast } from 'buefy'
-const urlGet = '/api/auth/currentUser';
 
 export default {
     name: 'LoginBtn',

@@ -15,7 +15,7 @@ if (!config.get("myprivatekey")) {
 
 // Connect to MongoDB database
 // const mongoUrl = 'mongodb://mongo_1:27017,mongo_2:27018,mongo_3:27019/auth';
-const mongoUrl = 'mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo:27017/admin';
+const mongoUrl = 'mongodb://mongo_1:27017/auth';
 mongoose.connect(mongoUrl, {useNewUrlParser: true, useUnifiedTopology: true}).catch(error => handleError(error));
 mongoose.connection.on('error', err => {
     console.log(err);
