@@ -11,6 +11,10 @@ router.get('/currentUser', jwt_authorization, async (req, res) => {
     res.send(user);
 });
 
+router.get('/admin', jwt_authorization, async (req, res) => {
+    res.status(200).send({'secured_msg': 'secret'});
+});
+
 router.post('/registerUser', async (req, res) => {
     console.log('Received request: CREATE USER');
 
@@ -30,7 +34,10 @@ router.post('/registerUser', async (req, res) => {
         password: req.body.password,
         email: req.body.email
     });
-    user.password = await bcrypt.hash(user.password, 10);
+
+    // Hash the password!
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
     console.log('User created and stored!');

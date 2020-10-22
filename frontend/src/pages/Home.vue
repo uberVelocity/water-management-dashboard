@@ -2,31 +2,21 @@
   <div>
     <Nav />
     <p>Status: {{this.status}}</p>
-    <div class="chart">
-      <template>
-        <div class="charts">
-          <div class="columns">
-            <div class="column">
-              <LineChart sensorType="temperature" />
-              <LineChart sensorType="pressure" />
-            </div>
-          </div>
-        </div>
-        <div></div>
-      </template>
-    </div>
+    <ChartGrid />
   </div>
 </template>
 
 <script>
 import Nav from "@/components/Nav";
+import axios from "axios";
+import ChartGrid from "@/components/ChartGrid";
 import { mapActions, mapGetters } from "vuex";
-import LineChart from "@/charts/LineChart";
+
 export default {
   name: "Home",
   components: {
     Nav,
-    LineChart,
+    ChartGrid,
   },
   data() {
     return {
@@ -47,8 +37,6 @@ export default {
     },
     // Fired when the server sends something on the "pressure" channel.
     pressure(data) {
-      // eslint-disable-next-line no-console
-      console.log(data);
       // store data in vuex store
       this.$store.dispatch("PUSH_PS_DATA", data);
       // eslint-disable-next-line no-console
@@ -74,10 +62,20 @@ export default {
     ...mapGetters(['STATUS']),
   },
   async mounted() {
-    await this.FETCH_STATUS()
+    // await this.FETCH_STATUS();
+    // this.status = this.STATUS();
+
+    // make call for historical data
+    const response = await axios.get('http://localhost:5000/api/sensor/');
     // eslint-disable-next-line no-console
-    this.status = this.STATUS()
-  }
+    console.log('MADE CALL FOR HISTORY');
+    // eslint-disable-next-line no-console
+    console.log(response.data['data']);
+    const history_data = response.data['data'];
+
+    // set store data with result
+    this.$store.dispatch("SET_PS_DATA", history_data);
+  },
 };
 
 </script>

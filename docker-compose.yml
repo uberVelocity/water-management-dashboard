@@ -44,7 +44,7 @@ services:
 
   # Kafka infrastructure
   kafka1:
-    image: 'bitnami/kafka:2'
+    image: 'docker.io/bitnami/kafka:2-debian-10'
     restart: always
     container_name: kafka1
     ports:
@@ -94,7 +94,7 @@ services:
     container_name: kafka3
     ports:
       - '9093:9093'
-      - '29093:29092'
+      - '29093:29093'
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
@@ -111,7 +111,7 @@ services:
     #   driver: "none"
 
 
-  # Kafka Producers (sensors)
+  # # Kafka Producers (sensors)
   leakagesensor:
     build: sensors/leakagesensor
     networks: 
@@ -202,55 +202,55 @@ services:
     volumes: 
       - ./data1/db:/data/db
       - ./data1/configdb:/data/configdb
-      - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      # - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
-      - '27011:27017'
+      - '27017:27017'
     expose:
       - 27017
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    # entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
 
-  # Database for storing user information
-  mongo_2:
-    build: mongo/
-    container_name: mongo_2
-    networks: 
-      - bridge-network
-    environment:
-      - MONGO_INITDB_DATABASE=auth_db
-    volumes: 
-      - ./data2/db:/data/db
-      - ./data2/configdb:/data/configdb
-    ports:
-      - '27012:21017'
-    expose:
-      - 27017
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-    restart: always
+  # # Database for storing user information
+  # mongo_2:
+  #   build: mongo/
+  #   container_name: mongo_2
+  #   networks: 
+  #     - bridge-network
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=auth_db
+  #   volumes: 
+  #     - ./data2/db:/data/db
+  #     - ./data2/configdb:/data/configdb
+  #   ports:
+  #     - '27012:21017'
+  #   expose:
+  #     - 27017
+  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+  #   restart: always
 
-  # Database for storing user information
-  mongo_3:
-    build: mongo/
-    container_name: mongo_3
-    networks: 
-      - bridge-network
-    environment:
-      - MONGO_INITDB_DATABASE=auth_db
-    volumes: 
-      - ./data3/db:/data/db
-      - ./data3/configdb:/data/configdb
-    ports:
-      - '27013:21017'
-    expose:
-      - 27017
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-    restart: always
+  # # Database for storing user information
+  # mongo_3:
+  #   build: mongo/
+  #   container_name: mongo_3
+  #   networks: 
+  #     - bridge-network
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=auth_db
+  #   volumes: 
+  #     - ./data3/db:/data/db
+  #     - ./data3/configdb:/data/configdb
+  #   ports:
+  #     - '27013:21017'
+  #   expose:
+  #     - 27017
+  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+  #   restart: always
 
   # Cassandra cluster containing three nodes
   # replication factor = 3 (one copy of a row on each node)
   cassandra_1:
     container_name: cassandra_1
-    build: cassandra/
+    image: ubervelocity/wmd-cassandra
     networks: 
       - bridge-network
     environment:
@@ -263,43 +263,43 @@ services:
       - 9042
       - 9160
     restart: always
-    logging:
-      driver: none
+    # logging:
+    #   driver: none
 
-  cassandra_2:
-    container_name: cassandra_2
-    build: cassandra/
-    networks: 
-      - bridge-network
-    environment: 
-      - CASSANDRA_SEEDS=cassandra_1
-      - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=2048M
-    expose:
-      - 7000
-      - 7001
-      - 7199
-      - 9042
-      - 9160
-    restart: always
-    logging:
-      driver: none
+  # cassandra_2:
+  #   container_name: cassandra_2
+  #   build: cassandra/
+  #   networks: 
+  #     - bridge-network
+  #   environment: 
+  #     - CASSANDRA_SEEDS=cassandra_1
+  #     - HEAP_NEWSIZE=128M
+  #     - MAX_HEAP_SIZE=2048M
+  #   expose:
+  #     - 7000
+  #     - 7001
+  #     - 7199
+  #     - 9042
+  #     - 9160
+  #   restart: always
+  #   logging:
+  #     driver: none
 
-  cassandra_3:
-    container_name: cassandra_3
-    build: cassandra/
-    networks: 
-      - bridge-network
-    environment:
-      - CASSANDRA_SEEDS=cassandra_1
-      - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=2048M
-    expose:
-      - 7000
-      - 7001
-      - 7199
-      - 9042
-      - 9160
-    restart: always
-    logging:
-      driver: none
+  # cassandra_3:
+  #   container_name: cassandra_3
+  #   build: cassandra/
+  #   networks: 
+  #     - bridge-network
+  #   environment:
+  #     - CASSANDRA_SEEDS=cassandra_1
+  #     - HEAP_NEWSIZE=128M
+  #     - MAX_HEAP_SIZE=2048M
+  #   expose:
+  #     - 7000
+  #     - 7001
+  #     - 7199
+  #     - 9042
+  #     - 9160
+  #   restart: always
+  #   logging:
+  #     driver: none
