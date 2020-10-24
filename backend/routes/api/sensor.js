@@ -6,7 +6,6 @@ const connectCassandra = require('../../middleware/connectCassandra');
 router.get('/', connectCassandra, async (req, res) => {
     console.log(`received GET request sensor`);
     const cassandraClient = res.client;
-    console.log(cassandraClient);
     const query = 'SELECT * FROM ptSensor';
     let data = undefined;
     await new Promise((resolve, reject) => {
@@ -26,6 +25,7 @@ router.get('/', connectCassandra, async (req, res) => {
             } else {
                 console.log('Unsuccessful query!');
                 res.status(500).send(err.message);
+                return;
             }
             resolve();
         });

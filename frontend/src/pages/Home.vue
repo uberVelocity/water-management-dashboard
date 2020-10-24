@@ -66,7 +66,7 @@ export default {
     // this.status = this.STATUS();
 
     // make call for historical data
-    const response = await axios.get('http://localhost:5000/api/sensor/');
+    const response = await axios.get('/api/sensor/');
     // eslint-disable-next-line no-console
     console.log('MADE CALL FOR HISTORY');
     // eslint-disable-next-line no-console
