@@ -47,32 +47,19 @@ async () => {
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));
 
-
 const io = require('socket.io')(server);
 let connections = [];
 
-// function pushToSocket(data) {
-//     for (connection of connections) {
-//         connection.emit("pressure", data)
-//     }
-// }
+function pushToSocket(data) {
+    for (connection of connections) {
+        connection.emit("pressure", data)
+    }
+}
 
-// Listen for socket connections
-io.of('/socket.io/').on('connection', async (socket) => {
-    // Push connection to client on connections stack
-    connections.push(socket);
-
+async function runConsumer() {
     // Connect to Kafka
     await consumer.connect()
     await consumer.subscribe({ topic: 'sensor_data', fromBeginning: true })
-
-    console.log(`a user has connected: ${connections.length} connected`);
-
-    console.log('Emitting to pressure')
-    // io.sockets.emit("pressure", "test")
-    // socket.broadcast.emit("pressure", "test")
-    console.log('Emitted to pressure')
-    // socket.emit("pressure", "test2")
 
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
@@ -85,13 +72,14 @@ io.of('/socket.io/').on('connection', async (socket) => {
             const type = data["type"];
             
             console.log(`emitting to ${type}`)
-
+    
             if (type == "pressure") {
                 // console.log('emitting to pressure using socket.broadcast.emit()')
                 // socket.broadcast.emit("pressure", data)
                 // console.log('emitting to pressure using io.sockets.emit()')
                 // io.sockets.emit("pressure", data)
-                socket.emit("pressure", data)
+                pushToSocket(data)
+                // socket.emit("pressure", data)
             } 
             else if (type == "leakage") {
                 socket.broadcast.emit("leakage", data)
@@ -101,6 +89,15 @@ io.of('/socket.io/').on('connection', async (socket) => {
             }
         }
     });
+}
+
+runConsumer()
+
+// Listen for socket connections
+io.of('/socket.io/').on('connection', async (socket) => {
+    // Push connection to client on connections stack
+    connections.push(socket);
+    console.log(`a user has connected: ${connections.length} connected`);
 });
 
 io.sockets.on('disconnect', (socket) => {
