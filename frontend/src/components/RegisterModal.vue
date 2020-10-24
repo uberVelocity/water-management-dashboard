@@ -76,9 +76,11 @@ export default {
             }
 
             if (response !== undefined && response.status === 200) {
-                // eslint-disable-next-line no-console
-                console.log(response.data);
                 localStorage.setItem('authorization', response.headers['authorization']);
+                localStorage.setItem('username', this.username)
+
+                // toggle logged in
+                this.$store.dispatch("SET_LOGGED_IN", true);
 
                 // close modal
                 this.isComponentModalActive = false;
@@ -89,7 +91,8 @@ export default {
                     type: 'is-success'
                 });
             } else {
-                alert(response);
+                // eslint-disable-next-line no-console
+                console.error(response);
                 Toast.open({
                     message: 'Incorrect data format',
                     type: 'is-danger'

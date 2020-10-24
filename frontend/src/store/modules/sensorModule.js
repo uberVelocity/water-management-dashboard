@@ -11,24 +11,24 @@ const state = {
 
 const getters = {
     PS_SENSORS : state => {
-        // eslint-disable-next-line no-console
-        console.log('Getting pressure sensor data from store');
-        // eslint-disable-next-line no-console
-        console.log(state.ps_sensors_data);
+        // // eslint-disable-next-line no-console
+        // console.log('Getting pressure sensor data from store');
+        // // eslint-disable-next-line no-console
+        // console.log(state.ps_sensors_data);
         return state.ps_sensors_data;
     },
     LK_SENSORS : state => {
-        // eslint-disable-next-line no-console
-        console.log('Getting leakage sensor data from store');
-        // eslint-disable-next-line no-console
-        console.log(state.lk_sensors_data);
+        // // eslint-disable-next-line no-console
+        // console.log('Getting leakage sensor data from store');
+        // // eslint-disable-next-line no-console
+        // console.log(state.lk_sensors_data);
         return state.lk_sensors_data;
     },
     QL_SENSORS : state => {
-        // eslint-disable-next-line no-console
-        console.log('Getting quality sensor data from store');
-        // eslint-disable-next-line no-console
-        console.log(state.ql_sensors_data);
+        // // eslint-disable-next-line no-console
+        // console.log('Getting quality sensor data from store');
+        // // eslint-disable-next-line no-console
+        // console.log(state.ql_sensors_data);
         return state.ql_sensors_data;
     },
     STATUS : state => {
@@ -48,8 +48,8 @@ const mutations = {
 const actions = {
     PUSH_PS_DATA: (context, payload) => {
         context.commit('PUSH_PS_DATA', payload);
-        // eslint-disable-next-line no-console
-        console.log('Store: Stored pressure data');
+        // // eslint-disable-next-line no-console
+        // console.log('Store: Stored pressure data');
     },
     PUSH_LK_DATA: (context, payload) => {
         context.commit("PUSH_LK_DATA", payload);
@@ -63,8 +63,8 @@ const actions = {
     },
     SET_PS_DATA: (context, payload) => {
         context.commit("SET_PS_DATA", payload);
-        // eslint-disable-next-line no-console
-        console.log('Store: Set pressure data');
+        // // eslint-disable-next-line no-console
+        // console.log('Store: Set pressure data');
     },
     SET_LK_DATA: (context, payload) => {
         context.commit("SET_LK_DATA", payload);

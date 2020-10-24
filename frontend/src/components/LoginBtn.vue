@@ -44,7 +44,6 @@
 
 <script>
 import axios from 'axios';
-const urlGet = 'http://localhost:4000/api/auth/login';
 import { ToastProgrammatic as Toast } from 'buefy'
 
 export default {
@@ -57,15 +56,14 @@ export default {
     },
     methods: {
         async login() {
-
-            // eslint-disable-next-line no-console
-            console.log('Message LogIn');
-            // eslint-disable-next-line no-console
-            console.log(this.email + this.password);
-
+            const urlLogin = 'http://localhost:4000/api/auth/login';
             let response = undefined;
+
+            // eslint-disable-next-line no-console
+            console.log('SENT REQUEST FOR LOGIN');
+
             try {
-                response = await axios.post(urlGet, {
+                response = await axios.post(urlLogin, {
                     email: this.email,
                     password: this.password
                 })
@@ -75,10 +73,12 @@ export default {
             }
 
             if (response !== undefined && response.status === 200) {
-                // eslint-disable-next-line no-console
-                console.log(response.data);
 
                 localStorage.setItem('authorization', response.headers['authorization']);
+                localStorage.setItem('username', response.data['username']);
+
+                // toggle logged in
+                this.$store.dispatch("SET_LOGGED_IN", true);
 
                 Toast.open({
                     message: 'Successfully logged in!',

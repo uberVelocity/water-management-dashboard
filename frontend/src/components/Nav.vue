@@ -8,7 +8,16 @@
 
       <template slot="end">
         <b-navbar-item tag="div">
-          <div class="buttons">
+          <div v-if="get_logged_in">
+            <b-dropdown :triggers="['hover']" aria-role="list">
+              <button class="button is-info" slot="trigger">
+                  <span>Welcome, {{get_username}}</span>
+              </button>
+
+              <b-dropdown-item aria-role="listitem" @click="logout" style="color: red">Log out</b-dropdown-item>
+            </b-dropdown>
+          </div>
+          <div v-else class="buttons">
             <RegisterModal />
             <LoginBtn />
           </div>
@@ -58,8 +67,34 @@
             type: 'is-danger'
           });
         }
-        
       },
+      logout() {
+        // clear local storage
+        localStorage.clear();
+
+        // toggle logged in
+        this.$store.dispatch('SET_LOGGED_IN', false);
+        
+        Toast.open({
+            message: 'You are no longer logged in!',
+            type: 'is-warning'
+        });
+      }
+    },
+    mounted() {
+      if (localStorage.getItem('authorization')) {
+        this.$store.dispatch("SET_LOGGED_IN", true);
+      } else {
+        this.$store.dispatch("SET_LOGGED_IN", false);
+      }
+    },
+    computed: {
+      get_username() {
+        return localStorage.getItem('username');
+      },
+      get_logged_in() {
+        return this.$store.getters.LOGGED_IN;
+      }
     }
   }
 </script>

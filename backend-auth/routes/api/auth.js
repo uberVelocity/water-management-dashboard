@@ -7,19 +7,19 @@ const bcrypt = require('bcrypt');
 
 router.post('/login', async (req, res) => {
     console.log('Received request: LOGIN USER');
-    console.log(req)
-
-    // Check if user exists
-    let user = await User.findOne({email: req.body.email});
-    console.log('User found:');
-    console.log(user);
-    if (!user) return res.status(400).send("User does not exist");
 
     // Hash the password!
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
+    let password = await bcrypt.hash(req.body.password, salt);
 
-    console.log('User created and stored!');
+    // Check if user exists
+    let user = await User.findOne({email: req.body.email, password: password});
+    console.log('User found:');
+    if (!user) {
+        return res.status(400).send("User does not exist");
+    } else {
+        console.log(user);
+    }
 
     // Generate token and send response
     const token = await user.generateAuthToken();
@@ -30,7 +30,6 @@ router.post('/login', async (req, res) => {
     });
     res.end();
     console.log('Token created and sent, successfully logged in!');
-
 });
 
 router.get('/admin', jwt_authorization, async (req, res) => {
