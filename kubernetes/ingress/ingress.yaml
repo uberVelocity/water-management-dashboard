@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: ingress-wmd
   annotations:
-    
-    
 spec:
   rules:
     - http:
