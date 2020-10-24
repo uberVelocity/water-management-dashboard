@@ -3,14 +3,8 @@ kind: Ingress
 metadata:
   name: ingress-wmd
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/session-cookie-name: "hello-cookie"
-    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/affinity-mode: persistent
-    nginx.ingress.kubernetes.io/session-cookie-hash: sha1d
+    
+    
 spec:
   rules:
     - http:
@@ -30,7 +24,7 @@ spec:
             backend:
               serviceName: backend-auth
               servicePort: 4000
-          - path: /socket.io
+          - path: /socket.io/
             pathType: Prefix
             backend:
               serviceName: backend
