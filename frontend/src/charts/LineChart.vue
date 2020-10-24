@@ -11,27 +11,24 @@ export default {
       VueApexCharts
   },
   props : {
-    sensorType : String,
+    title: String,
+    xLabel: String,
+    yLabel: String,
+    data: Array
   },
   data() {
     return {
-      series: [
-        {
-          name: this.sensorType.toUpperCase(),
-          data: []
-        },
-      ],
       options: {
         xaxis: {
           type: 'category',
           title: {
-            text: 'Date & Time'
+            text: this.xLabel
           }
         },
         yaxis: {
           type: 'numeric',
           title: {
-            text: this.sensorType.toUpperCase()
+            text: this.yLabel
           }
         },
         colors: ['#3e3ea3', '#333333', '#ac3a43'],
@@ -42,7 +39,7 @@ export default {
           text: 'Loading...'
         },
         title: {
-          text: this.sensorType.toUpperCase() + ' sensor measurements',
+          text: this.title,
           floating: false,
           align: 'left',
           margin: 10,
@@ -56,49 +53,16 @@ export default {
       },
     }
   },
-  mounted() {
-    this.series = [{
-      data: this.$store.getters.PS_SENSORS
-    }]
-  },
-  computed : {
+  computed: {
     getSeries() {
-
-      const sensorData = this.$store.getters.PS_SENSORS;
-
-      let seriesData;
-      // TODO: not scalable, doesn't really make the chart component reusable,
-      // find a better way
-      if (this.sensorType === 'pressure') {
-        seriesData = sensorData.map(el => {
-          return el['variables']['temperature'];
-        });
-      } else {
-        seriesData = sensorData.map(el => {
-          return el['variables']['pressure'];
-        });
-      }
-
-      const timestampList = sensorData.map(el => {
-        const unix_dt = new Date(el['timestamp'] * 1000);
-        const time = unix_dt.toLocaleTimeString("en-GB");
-        const date = unix_dt.toLocaleDateString("en-GB");
-        
-        let datetime = date + ' ' + time;
-        // eslint-disable-next-line no-console
-        console.log(datetime);
-        return datetime;
-      });
-
-      const res = seriesData.map(function(e, i) {
-        return {x: timestampList[i], y: e};
-      });
-
       return [
-        {data: res, name: 'Temperature'},
+        {
+          name: this.title,
+          data: this.data
+        },
       ];
     }
-  },
+  }
 }
 </script>
 

@@ -18,7 +18,8 @@
                             <b-input
                                 type="email"
                                 placeholder="Your email"
-                                required>
+                                required
+                                v-model="email">
                             </b-input>
                         </b-field>
 
@@ -27,13 +28,13 @@
                                 type="password"
                                 password-reveal
                                 placeholder="Your password"
-                                required>
+                                required
+                                v-model="password">
                             </b-input>
                         </b-field>
-                        <!-- <b-checkbox>Remember me</b-checkbox> -->
                     </section>
                     <footer class="modal-card-foot">
-                        <button class="button is-primary" @click="getUsers">Login</button>
+                        <button class="button is-primary" type="submit" @click="login">Login</button>
                     </footer>
                 </div>
             </form>
@@ -43,28 +44,53 @@
 
 <script>
 import axios from 'axios';
-const urlGet = 'http://localhost:4000/api/auth/currentUser';
+import { ToastProgrammatic as Toast } from 'buefy'
 
 export default {
     name: 'LoginBtn',
+    data() {
+        return {
+            email: '',
+            password: ''
+        }
+    },
     methods: {
-        async getUsers() {
-
-            const config = {
-                headers : {
-                    authorization : localStorage.getItem('authorization')
-                }
-            }
+        async login() {
+            const urlLogin = 'http://localhost:4000/api/auth/login';
+            let response = undefined;
 
             // eslint-disable-next-line no-console
-            console.log('Button pressed, sending request!');
-            const response = await axios.get(urlGet, config);
-            if (response.status === 200) {
+            console.log('SENT REQUEST FOR LOGIN');
+
+            try {
+                response = await axios.post(urlLogin, {
+                    email: this.email,
+                    password: this.password
+                })
+            } catch (e) {
                 // eslint-disable-next-line no-console
-                console.log(response.data);
+                console.log(e);
+            }
+
+            if (response !== undefined && response.status === 200) {
+
+                localStorage.setItem('authorization', response.headers['authorization']);
+                localStorage.setItem('username', response.data['username']);
+
+                // toggle logged in
+                this.$store.dispatch("SET_LOGGED_IN", true);
+
+                Toast.open({
+                    message: 'Successfully logged in!',
+                    type: 'is-success'
+                });
             } else {
                 // eslint-disable-next-line no-console
                 console.error(response);
+                Toast.open({
+                    message: 'Incorrect credentials!',
+                    type: 'is-danger'
+                });
             }
         },
     }

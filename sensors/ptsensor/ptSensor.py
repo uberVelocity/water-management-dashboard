@@ -30,16 +30,23 @@ def generate_data():
     return msg
 
 
+print('creating producer')
 
-# #Creating producer
+# Creating producer
 producer = KafkaProducer(bootstrap_servers=['kafka1:9091', 'kafka2:9092', 'kafka3:9093'],
         value_serializer=lambda x: 
         dumps(x).encode('utf-8'))
 
+print('generating data')
+
+count = 0
 while True:
+    count += 1
     time.sleep(5)
     data = generate_data()
-    producer.send('sensor_data', value=data)
+    output = producer.send('sensor_data', value=data)
+    print(f'message {count} sent!')
+    print(f'output: {output}')
 
 
 

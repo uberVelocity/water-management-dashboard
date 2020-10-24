@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-wmd
+  annotations:
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: frontend
+              servicePort: 80
+          - path: /api/
+            pathType: Prefix
+            backend:
+              serviceName: backend
+              servicePort: 5001
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+              serviceName: backend-auth
+              servicePort: 4000
+          - path: /socket.io/
+            pathType: Prefix
+            backend:
+              serviceName: backend
+              servicePort: 5001

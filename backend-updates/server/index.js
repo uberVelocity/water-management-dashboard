@@ -21,6 +21,13 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
+app.get('/test', (req, res) => {
+    console.log('received get request!')
+    res.status(200).json({
+        message: 'socket server is reachable'
+    });
+});
+
 const port = process.env.PORT || 5500;
 
 // Start listening for requests

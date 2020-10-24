@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-updates
+spec:
+  selector:
+    matchLabels:
+      app: backend-updates
+  template:
+    metadata:
+      labels:
+        app: backend-updates
+    spec:
+      containers:
+      - name: backend-updates
+        image: ubervelocity/wmd-backend-updates
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5500
