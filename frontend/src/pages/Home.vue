@@ -37,6 +37,10 @@ export default {
     },
     // Fired when the server sends something on the "pressure" channel.
     pressure(data) {
+      // eslint-disable-next-line no-console
+      console.log('RECEIVED PRESSURE SOCKET DATA')
+      // eslint-disable-next-line no-console
+      console.log(data)
       // store data in vuex store
       this.$store.dispatch("PUSH_PS_DATA", data);
       // eslint-disable-next-line no-console

@@ -1,7 +1,7 @@
 const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
-  clientId: 'my-app',
+  clientId: 'backend-live-socket',
   brokers: ['kafka:9092']
 })
 
@@ -40,41 +40,46 @@ app.get('/api', (req, res) => {
     });
 });
 
+async () => {
+
+}
+
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));
 
-// ##########
-
-
 const io = require('socket.io')(server);
-const connections = [];
+let connections = [];
 
-// Listen for socket connections
-io.sockets.on('connection', async (socket) => {
-    // Push connection to client on connections stack
-    connections.push(socket);
-    console.log(`a user has connected: ${connections.length} connected`);
+function pushToSocket(data) {
+    for (connection of connections) {
+        connection.emit("pressure", data)
+    }
+}
 
-    await consumer.connect()  
+async function runConsumer() {
+    // Connect to Kafka
+    await consumer.connect()
     await consumer.subscribe({ topic: 'sensor_data', fromBeginning: true })
 
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
-            console.log({
-                partition,
-                offset: message.offset,
-                value: message.value.toString(),
-            });
+            // console.log({
+            //     partition,
+            //     offset: message.offset,
+            //     value: message.value.toString(),
+            // });
             const data = JSON.parse(message.value.toString());
             const type = data["type"];
             
             console.log(`emitting to ${type}`)
-
+    
             if (type == "pressure") {
-                console.log('emitting to pressure using socket.broadcast.emit()')
-                socket.broadcast.emit("pressure", data)
-                console.log('emitting to pressure using io.sockets.emit()')
-                io.sockets.emit("pressure", data)
+                // console.log('emitting to pressure using socket.broadcast.emit()')
+                // socket.broadcast.emit("pressure", data)
+                // console.log('emitting to pressure using io.sockets.emit()')
+                // io.sockets.emit("pressure", data)
+                pushToSocket(data)
+                // socket.emit("pressure", data)
             } 
             else if (type == "leakage") {
                 socket.broadcast.emit("leakage", data)
@@ -84,6 +89,15 @@ io.sockets.on('connection', async (socket) => {
             }
         }
     });
+}
+
+runConsumer()
+
+// Listen for socket connections
+io.of('/socket.io/').on('connection', async (socket) => {
+    // Push connection to client on connections stack
+    connections.push(socket);
+    console.log(`a user has connected: ${connections.length} connected`);
 });
 
 io.sockets.on('disconnect', (socket) => {
