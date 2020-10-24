@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = '/api/';
+const url = 'http://localhost:5000/';
 
 const state = {
     ps_sensors_data: [],

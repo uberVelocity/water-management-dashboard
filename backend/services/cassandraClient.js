@@ -2,6 +2,7 @@ function cassandraClient() {
     console.log('Creating Cassandra Client...');
     const localDatacenter = 'datacenter1';
     const cassandra = require('cassandra-driver');
+
     const contactPoints = ['cassandra'];
     const loadBalancingPolicy = new cassandra.policies.loadBalancing.DCAwareRoundRobinPolicy(localDatacenter);
     const clientOptions = {

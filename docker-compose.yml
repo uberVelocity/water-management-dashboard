@@ -63,8 +63,8 @@ services:
       - 'kafka1_data:/bitnami'
     depends_on:
       - zookeeper
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "none"
 
   kafka2:
     container_name: kafka2
@@ -85,8 +85,8 @@ services:
       - 'kafka2_data:/bitnami'
     depends_on:
       - zookeeper
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "none"
 
   kafka3:
     image: 'bitnami/kafka:2'
@@ -107,16 +107,16 @@ services:
       - 'kafka3_data:/bitnami'
     depends_on:
       - zookeeper
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "none"
 
 
   # # Kafka Producers (sensors)
-  leakagesensor:
-    build: sensors/leakagesensor
-    networks: 
-      - bridge-network
-    restart: always
+  # leakagesensor:
+  #   build: sensors/leakagesensor
+  #   networks: 
+  #     - bridge-network
+  #   restart: always
   
   ptsensor:
     build: sensors/ptsensor
@@ -124,11 +124,11 @@ services:
       - bridge-network
     restart: always
 
-  qualitysensor:
-    build: sensors/qualitysensor
-    networks: 
-      - bridge-network
-    restart: always
+  # qualitysensor:
+  #   build: sensors/qualitysensor
+  #   networks: 
+  #     - bridge-network
+  #   restart: always
   
   # Kafka Consumers
   consumerdb:
@@ -137,6 +137,8 @@ services:
     networks: 
       - bridge-network
     restart: always
+    logging:
+      driver: "none"
 
   # Frontend
   frontend:
@@ -158,6 +160,8 @@ services:
     restart: always
     ports:
       - '5001-5003:5001'
+    logging:
+      driver: "none"
 
   # Backend load balancer
   load-balancer:
@@ -193,58 +197,55 @@ services:
 
   # Database for storing user information
   mongo_1:
-    build: mongo-master/
+    image: mongo
     container_name: mongo_1
     networks: 
       - bridge-network
     environment:
       - MONGO_INITDB_DATABASE=auth_db
     volumes: 
-      - ./data1/db:/data/db
-      - ./data1/configdb:/data/configdb
+      - /data/db
+      - /data/configdb
+      - ./mongo-master/:/docker-entrypoint-initdb.d
       # - ./mongo-master/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
-      - '27017:27017'
-    expose:
       - 27017
-    # entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
+    # logging:
+    #   driver: "none"
+
+  # # Database for storing user information
+  mongo_2:
+    image: mongo
+    container_name: mongo_2
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - /data/db
+      - /data/configdb
+    ports:
+      - 21017
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     restart: always
 
-  # # Database for storing user information
-  # mongo_2:
-  #   build: mongo/
-  #   container_name: mongo_2
-  #   networks: 
-  #     - bridge-network
-  #   environment:
-  #     - MONGO_INITDB_DATABASE=auth_db
-  #   volumes: 
-  #     - ./data2/db:/data/db
-  #     - ./data2/configdb:/data/configdb
-  #   ports:
-  #     - '27012:21017'
-  #   expose:
-  #     - 27017
-  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-  #   restart: always
-
-  # # Database for storing user information
-  # mongo_3:
-  #   build: mongo/
-  #   container_name: mongo_3
-  #   networks: 
-  #     - bridge-network
-  #   environment:
-  #     - MONGO_INITDB_DATABASE=auth_db
-  #   volumes: 
-  #     - ./data3/db:/data/db
-  #     - ./data3/configdb:/data/configdb
-  #   ports:
-  #     - '27013:21017'
-  #   expose:
-  #     - 27017
-  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-  #   restart: always
+  # Database for storing user information
+  mongo_3:
+    image: mongo
+    container_name: mongo_3
+    networks: 
+      - bridge-network
+    environment:
+      - MONGO_INITDB_DATABASE=auth_db
+    volumes: 
+      - /data/db
+      - /data/configdb
+    ports:
+      - 21017
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    restart: always
 
   # Cassandra cluster containing three nodes
   # replication factor = 3 (one copy of a row on each node)
@@ -263,8 +264,8 @@ services:
       - 9042
       - 9160
     restart: always
-    # logging:
-    #   driver: none
+    logging:
+      driver: none
 
   # cassandra_2:
   #   container_name: cassandra_2

@@ -8,12 +8,11 @@ const userSchema = new mongoose.Schema({
     username : {type : String, unique : true, required : [true, 'Username is required']},
     email : {type : String, unique : true, required : [true, 'Email is required']},
     password : {type : String, required : [true, 'Password is required']},
-    level : {type : Number, default : 1}
 });
 
 // Method to generate authToken
 userSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({_id: this._id, level: this.level}, config.get('myprivatekey'));
+    const token = jwt.sign({_id: this._id, email: this.email}, config.get('myprivatekey'));
     return token;
 };
 
