@@ -63,11 +63,11 @@ async function runConsumer() {
 
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
-            console.log({
-                partition,
-                offset: message.offset,
-                value: message.value.toString(),
-            });
+            // console.log({
+            //     partition,
+            //     offset: message.offset,
+            //     value: message.value.toString(),
+            // });
             const data = JSON.parse(message.value.toString());
             const type = data["type"];
             

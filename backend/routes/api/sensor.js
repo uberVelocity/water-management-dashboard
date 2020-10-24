@@ -24,6 +24,7 @@ router.get('/', connectCassandra, async (req, res) => {
                 });
             } else {
                 console.log('Unsuccessful query!');
+                console.log(err.message)
                 res.status(500).send(err.message);
                 return;
             }
