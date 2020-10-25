@@ -17,8 +17,8 @@ import Admin from '@/pages/Admin'
 import VueSocketIO from 'vue-socket.io'
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: '/socket.io/',
-  options: {transports: ['websocket'], upgrade: false, path: "/socket.io/" }
+  connection: 'localhost:5500',
+  options: {transports: ['websocket'], upgrade: false}
 }))
 
 Vue.use(VueRouter)

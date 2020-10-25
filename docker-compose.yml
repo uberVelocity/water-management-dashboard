@@ -63,8 +63,8 @@ services:
       - 'kafka1_data:/bitnami'
     depends_on:
       - zookeeper
-    logging:
-      driver: "none"
+    # logging:
+    #   driver: "none"
 
   kafka2:
     container_name: kafka2
@@ -85,8 +85,8 @@ services:
       - 'kafka2_data:/bitnami'
     depends_on:
       - zookeeper
-    logging:
-      driver: "none"
+    # logging:
+    #   driver: "none"
 
   kafka3:
     image: 'bitnami/kafka:2'
@@ -107,16 +107,16 @@ services:
       - 'kafka3_data:/bitnami'
     depends_on:
       - zookeeper
-    logging:
-      driver: "none"
+    # logging:
+    #   driver: "none"
 
 
   # # Kafka Producers (sensors)
-  # leakagesensor:
-  #   build: sensors/leakagesensor
-  #   networks: 
-  #     - bridge-network
-  #   restart: always
+  leakagesensor:
+    build: sensors/leakagesensor
+    networks: 
+      - bridge-network
+    restart: always
   
   ptsensor:
     build: sensors/ptsensor
@@ -124,11 +124,11 @@ services:
       - bridge-network
     restart: always
 
-  # qualitysensor:
-  #   build: sensors/qualitysensor
-  #   networks: 
-  #     - bridge-network
-  #   restart: always
+  qualitysensor:
+    build: sensors/qualitysensor
+    networks: 
+      - bridge-network
+    restart: always
   
   # Kafka Consumers
   consumerdb:
@@ -256,7 +256,7 @@ services:
       - bridge-network
     environment:
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=2048M
+      - MAX_HEAP_SIZE=1024M
     expose:
       - 7000
       - 7001

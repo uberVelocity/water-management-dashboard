@@ -2,7 +2,7 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
   clientId: 'backend-live-socket',
-  brokers: ['kafka:9092']
+  brokers: ['kafka1:9092', 'kafka2:9092', 'kafka3:9092']
 })
 
 const consumer = kafka.consumer({ groupId: 'live_update' });
