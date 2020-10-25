@@ -55,14 +55,13 @@ Zookeeper is used in combination with Kafka in order to maintain state informati
 
 ## Data Database
 **Technologies:** CassandraDB
-**Description:**
-**Pros/Cons:** 
+**Description:** Cassandra is a key-value storage service that is deployed in a replicated manner and serves to store all historical sensor data.
+**Pros/Cons:** It is very fast and also is the optimal use case for our type of data as sensor data is essentially key:value, namely timestamp:value. Its speed derives from the data stracture that is used, which is SSTables. Alongside consistent hashing, Cassandra allows client requests to be distributed along its partitions. However, due to its replication scheme, looping over nodes within the replication scheme is costly.
 
 ## Clients Database
 **Technologies:** MongoDB
 **Description:**
 **Pros/Cons:** 
-
 
 ## Containerization (Docker)
 **Technologies:** Docker, docker-compose.
@@ -74,10 +73,14 @@ Zookeeper is used in combination with Kafka in order to maintain state informati
 **Description:** In order to scale the application on multiple machines the Kubernetes orchestration engine was used. It uses the following abstractions: Deployments, Services, StatefulSets, Ingress. All stateless applications are deployed via he `Deployment` object whilst all stateful applications are deployed via `StatefulSets`. Stateful applications are: All databases, Zookeeper.
 **Pros/Cons:** Kubernetes, even when deployed locally, gives us more fault-tolerancy and scalability than Docker because scaling the application is easier and load-balancing comes free with the `Service` object. It also offers the possibility of integrating an `Ingress` to route external traffic to different services. We have done this to route traffic coming from the local browser that lives outside the K8s network to different services. `Ingress` can also be configured using `configmaps` or `annotations` to set cookies which are crucial in maintaining socket sessions between load balanced services. Alternatives to Kubernetes include: Nomad and Docker Swarm.
 
-## Load-balancer (Kubernetes + NGINX)
-**Description:**
+## Load-balancer
+**Technologies:** NGINX-ingress / NGINX
+**Description:** Outside of Kubernetes, an NGINX server is used as a proxy to a number of different services set up in an `upstream` configuration that allows round-robin load balancing.
 **Pros/Cons:**
 
 ## Socket
+**Technologies:** Socket.io
+**Description:** A client websocket setup on the frontend to receive sensor data from a socket.io backend service that consumes `sensor_data` topic in the `live_updates` group. The socket is set to use the `websocket` protocol and not the HTTP long polling version since that would defeat the purpose of having it in the first place (not really, but it's close). A session cookie is stored on the client-side in order to maintain the connection. Three different socket streams are used, each one pertaining to a different kind of sensor.
+**Pros/Cons:** Very small overhead when it comes to streaming data continuously to the frontend. Provides a minimalist API that is easy to work with. On the other hand, documentation needs to be scraped in order to learn about how certain mechanisms are implemented.
 
 ## Sensors
