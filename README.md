@@ -69,10 +69,14 @@ Zookeeper is used in combination with Kafka in order to maintain state informati
 **Description:** We separately containerized each of the main services described in this document, using Docker. Then, by configuring an appropriate docker-compose file, we were able to start our entire infrastructure with a single line of code. This not only made the development process faster, but also more flexible, as by just commenting some lines in the docker-compose file, we could choose exactly what containers to start, depending on the development needs at that time. Furthermore, it also made testing the scaling of the application much easier, as with a single flag we could decide how many containers of the same image to start.
 **Pros/Cons:** Working with Docker made it very easy to keep the project consistent across our machines and removed the pain of having to debug environment issues. Thus we feel like Docker helped a lot with the development process as a whole and we enjoyed using it. If we were to find a con, it would be the performance problems on non-native environments. One of our teammates who was using Docker in Mac OS had significant performance deficits when starting a complex infrastructure. 
 
-## Orchestration (Kubernetes)
-**Technologies**: In order to scale the application on multiple machines the Kubernetes orchestration engine was used. It uses the following abstractions: Deployments, Services, StatefulSets, Ingress.
+## Orchestration
+**Technologies:** Kubernetes
+**Description:** In order to scale the application on multiple machines the Kubernetes orchestration engine was used. It uses the following abstractions: Deployments, Services, StatefulSets, Ingress. All stateless applications are deployed via he `Deployment` object whilst all stateful applications are deployed via `StatefulSets`. Stateful applications are: All databases, Zookeeper.
+**Pros/Cons:** Kubernetes, even when deployed locally, gives us more fault-tolerancy and scalability than Docker because scaling the application is easier and load-balancing comes free with the `Service` object. It also offers the possibility of integrating an `Ingress` to route external traffic to different services. We have done this to route traffic coming from the local browser that lives outside the K8s network to different services. `Ingress` can also be configured using `configmaps` or `annotations` to set cookies which are crucial in maintaining socket sessions between load balanced services. Alternatives to Kubernetes include: Nomad and Docker Swarm.
 
 ## Load-balancer (Kubernetes + NGINX)
+**Description:**
+**Pros/Cons:**
 
 ## Socket
 
