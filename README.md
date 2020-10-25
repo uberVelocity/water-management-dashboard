@@ -28,9 +28,9 @@ The architecture follows the following structure. Sensors of different types sen
 **Pros/Cons**: The same advantages and disadvantages stated for the `backend` service apply here.
 
 ## Consumerdb
-**Technologies:** 
-**Description:**
-**Pros/Cons:** 
+**Technologies:** NodeJS, Express, Kafkajs.
+**Description:** The consumer consumers the `sensor_data` kafka topic and inserts all incoming sensor data into Cassandra.
+**Pros/Cons:**  The same pros and cons hold as in `backend`.
 
 
 ## Backend-updates
@@ -60,8 +60,8 @@ Zookeeper is used in combination with Kafka in order to maintain state informati
 
 ## Clients Database
 **Technologies:** MongoDB
-**Description:**
-**Pros/Cons:** 
+**Description:** A replicated instance of mongo is used to store clients in a clients collection.
+**Pros/Cons:** MongoDB was chosen due to its short development time that's facilitated by its document-oriented ideology. Disadvantages to mongo include considerations with respect to how to link documents together. 
 
 ## Containerization (Docker)
 **Technologies:** Docker, docker-compose.
@@ -84,3 +84,6 @@ Zookeeper is used in combination with Kafka in order to maintain state informati
 **Pros/Cons:** Very small overhead when it comes to streaming data continuously to the frontend. Provides a minimalist API that is easy to work with. On the other hand, documentation needs to be scraped in order to learn about how certain mechanisms are implemented.
 
 ## Sensors
+**Technologies:** Python
+**Description:** A set of sensors that produce different values ({temperature, pressure}, {leakage}, {quality}) was created using Python. These sensors produce different values at different time intervals.
+**Pros/Cons:** Developing sensors in python provides a very minimalist setup which enables us to change the types of sensors and swapping different ones easily. Scaling sensors is also easy in Docker since the images container footprint is fairly small.
