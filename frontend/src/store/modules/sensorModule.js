@@ -1,54 +1,88 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5000/api/status';
+const url = 'http://localhost:5000/';
 
 const state = {
-    status: undefined,
-    sensors: []
+    ps_sensors_data: [],
+    lk_sensors_data: [],
+    ql_sensors_data: [],
+    status: null
 };
 
 const getters = {
-    getSensors: state => {
-        return state.sensors
+    PS_SENSORS : state => {
+        // // eslint-disable-next-line no-console
+        // console.log('Getting pressure sensor data from store');
+        // // eslint-disable-next-line no-console
+        // console.log(state.ps_sensors_data);
+        return state.ps_sensors_data;
     },
-    getStatus: state => {
-        return state.status
+    LK_SENSORS : state => {
+        // // eslint-disable-next-line no-console
+        // console.log('Getting leakage sensor data from store');
+        // // eslint-disable-next-line no-console
+        // console.log(state.lk_sensors_data);
+        return state.lk_sensors_data;
+    },
+    QL_SENSORS : state => {
+        // // eslint-disable-next-line no-console
+        // console.log('Getting quality sensor data from store');
+        // // eslint-disable-next-line no-console
+        // console.log(state.ql_sensors_data);
+        return state.ql_sensors_data;
+    },
+    STATUS : state => {
+        return state.status;
     }
 };
 
-const actions = {
-    async fetchStatus({ commit }) {
-        const response = await axios.get(url);
-        commit('setStatus', response.data);
-    },
-
-    // Retrieve all sensors from the database
-    async fetchSensors({ commit }) {
-        // TODO: Insert API call to backend to retrieve sensors (make function async)
-        // const response = await axios.get(url)
-        const dummyData = [{
-            id: '1',
-            state: 'Online',
-            values: [10, 20, 30, 40, 50, 60]
-          },
-          {
-            id: '2',
-            state: 'Online',
-            values: [10, 20, 30, 40, 50, 60]
-          },
-          {
-            id: '3',
-            state: 'Offline',
-            values: [10, 60, 30, 40, 50, 60]
-          },
-        ]
-        commit('setSensors', dummyData);
-    },
+const mutations = {
+    PUSH_PS_DATA: (state, payload) => (state.ps_sensors_data.push(payload)),
+    PUSH_LK_DATA: (state, payload) => (state.lk_sensors_data.push(payload)),
+    PUSH_QL_DATA: (state, payload) => (state.ql_sensors_data.push(payload)),
+    SET_PS_DATA: (state, payload) => (state.ps_sensors_data = payload),
+    SET_LK_DATA: (state, payload) => (state.lk_sensors_data = payload),
+    SET_QL_DATA: (state, payload) => (state.ql_sensors_data = payload),
 };
 
-const mutations = {
-    setSensors: (state, sensors) => (state.sensors = sensors),
-    setStatus: (state, status) => (state.status = status)
+const actions = {
+    PUSH_PS_DATA: (context, payload) => {
+        context.commit('PUSH_PS_DATA', payload);
+        // // eslint-disable-next-line no-console
+        // console.log('Store: Stored pressure data');
+    },
+    PUSH_LK_DATA: (context, payload) => {
+        context.commit("PUSH_LK_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Stored leakage data');
+    },
+    PUSH_QL_DATA: (context, payload) => {
+        context.commit("PUSH_QL_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Stored quality data');
+    },
+    SET_PS_DATA: (context, payload) => {
+        context.commit("SET_PS_DATA", payload);
+        // // eslint-disable-next-line no-console
+        // console.log('Store: Set pressure data');
+    },
+    SET_LK_DATA: (context, payload) => {
+        context.commit("SET_LK_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Set leakage data');
+    },
+    SET_QL_DATA: (context, payload) => {
+        context.commit("SET_QL_DATA", payload);
+        // eslint-disable-next-line no-console
+        console.log('Store: Set quality data');
+    },
+    FETCH_STATUS : async (context) => {
+        // eslint-disable-next-line no-console
+        console.log('FETCHING STATUS')
+        const response = await axios.get(url)
+        context.commit("SET_STATUS", response)
+    },
+    SET_STATUS: (state, payload) => (state.status = payload),
 };
 
 export default {

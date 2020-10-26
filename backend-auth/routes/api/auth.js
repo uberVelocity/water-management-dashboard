@@ -5,10 +5,35 @@ const jwt_authorization = require('../../middleware/jwt_authorization');
 const { User, validateUser } = require('../../mongo_models/User');
 const bcrypt = require('bcrypt');
 
-router.get('/currentUser', jwt_authorization, async (req, res) => {
-    console.log('Received request: GET CURRENT USER');
-    const user = await User.findById(req.user._id).select("-password");
-    res.send(user);
+router.post('/login', async (req, res) => {
+    console.log('Received request: LOGIN USER');
+
+    // Hash the password!
+    const salt = await bcrypt.genSalt(10);
+    let password = await bcrypt.hash(req.body.password, salt);
+
+    // Check if user exists
+    let user = await User.findOne({email: req.body.email, password: password});
+    console.log('User found:');
+    if (!user) {
+        return res.status(400).send("User does not exist");
+    } else {
+        console.log(user);
+    }
+
+    // Generate token and send response
+    const token = await user.generateAuthToken();
+    res.header("Authorization", [token]).send({
+        _id: user._id,
+        username: user.username,
+        email: user.email
+    });
+    res.end();
+    console.log('Token created and sent, successfully logged in!');
+});
+
+router.get('/admin', jwt_authorization, async (req, res) => {
+    res.status(200).send({'secured_msg': 'secret'});
 });
 
 router.post('/registerUser', async (req, res) => {
@@ -30,7 +55,10 @@ router.post('/registerUser', async (req, res) => {
         password: req.body.password,
         email: req.body.email
     });
-    user.password = await bcrypt.hash(user.password, 10);
+
+    // Hash the password!
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
     console.log('User created and stored!');

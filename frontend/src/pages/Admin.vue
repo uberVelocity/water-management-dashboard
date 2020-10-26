@@ -3,6 +3,7 @@
     <Nav/>
     <h1>status: {{status}}</h1>
     <b-button @click="getStatusDemo" label="Get Status"></b-button>
+    <b-button @click="getData" label="Get Data"></b-button>
     <div class="columns">
       <div class="column is-narrow">
         <AdminMenu @setCurrentPage="setCurrentPage"/>
@@ -23,8 +24,10 @@ import Nav from '@/components/Nav'
 import SensorList from '@/components/SensorList.vue'
 import AdminMenu from '@/components/AdminMenu.vue'
 import UserList from '@/components/UserList.vue'
+import axios from 'axios'
 
 export default {
+  
   name: 'Admin',
   components: {
     Nav,
@@ -48,6 +51,11 @@ export default {
     getStatusDemo() {
       this.status = this.getStatus()
     },
+    async getData() {
+      const response = await axios.get('/api/sensor/')
+      // eslint-disable-next-line no-console
+      console.log(response)
+    }
   },
   created() {
     this.fetchStatus()

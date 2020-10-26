@@ -1,109 +1,92 @@
 <template>
   <div>
     <Nav />
-    <div class="chart">
-      <template>
-        <div class="charts">
-          <div class="columns">
-            <column>
-              <VueApexCharts width="500" type="line" :options="options" :series="series"></VueApexCharts>
-            </column>
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-          </div>
-          <div class="columns">
-            <column>
-              <VueApexCharts width="500" type="bar" :options="elsed" :series="series2"></VueApexCharts>
-            </column>
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-          </div>
-          <div class="columns">
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-            <column>
-              <VueApexCharts width="500" type="bar" :options="options" :series="series"></VueApexCharts>
-            </column>
-          </div>
-        </div>
-        <div>
-        </div>
-      </template>
-    </div>
+    <p>Status: {{this.status}}</p>
+    <ChartGrid />
   </div>
 </template>
 
 <script>
-  import Nav from '@/components/Nav'
-  import {
-    mapActions
-  } from 'vuex'
-  import VueApexCharts from 'vue-apexcharts'
-  export default {
+import Nav from "@/components/Nav";
+import axios from "axios";
+import ChartGrid from "@/components/ChartGrid";
+import { mapActions, mapGetters } from "vuex";
 
-    name: 'Home',
-    components: {
-      Nav,
-      VueApexCharts
+export default {
+  name: "Home",
+  components: {
+    Nav,
+    ChartGrid,
+  },
+  data() {
+    return {
+      isConnected: false,
+      socket: undefined,
+      status: undefined
+    };
+  },
+  sockets: {
+    connect() {
+      // Fired when the socket connects.
+      this.isConnected = true;
+      // eslint-disable-next-line no-console
+      console.log('Connected socket!')
     },
-    data() {
-      return {
-        options: {
-          colors: ['#3e3ea3', '#333333', '#ac3a43'],
-          chart: {
-            id: 'vuechart-example'
-          },
-          xaxis: {
-            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-          }
-        },
-        elsed: {
-          fill: {
-            colors: [
-              '#44cc5e'
-            ]
-          },
-          chart: {
-            id: 'vuechart-example'
-          },
-          xaxis: {
-            categories: [2000, 2001, 2002, 2003, 1995, 1996, 1997, 1998]
-          }
-        },
-        series: [{
-          name: 'series-1',
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
-        }],
-        series2: [{
-          name: 'series-2',
-          data: [300, 400, -405, -500, -409, -600, 700, -901]
-        }]
-      }
+    disconnect() {
+      this.isConnected = false;
     },
-    methods: {
-      ...mapActions(['fetchSensors']),
+    // Fired when the server sends something on the "pressure" channel.
+    pressure(data) {
+      // eslint-disable-next-line no-console
+      console.log('RECEIVED PRESSURE SOCKET DATA')
+      // eslint-disable-next-line no-console
+      console.log(data)
+      // store data in vuex store
+      this.$store.dispatch("PUSH_PS_DATA", data);
+      // eslint-disable-next-line no-console
+      console.log('Home: Stored pressure data');
     },
-    created() {
-      this.fetchSensors()
-    }
-  }
+    // Fired when the server sends something on the "leakage" channel.
+    leakage(data) {
+      // store data in vuex store
+      this.$store.dispatch("PUSH_LK_DATA", data);
+      // eslint-disable-next-line no-console
+      console.log(data);
+    },
+    // Fired when the server sends something on the "quality" channel.
+    quality(data) {
+      // store data in vuex store
+      this.$store.dispatch("PUSH_QL_DATA", data);
+      // eslint-disable-next-line no-console
+      console.log(data);
+    },
+  },
+  methods: {
+    ...mapActions(['FETCH_STATUS']),
+    ...mapGetters(['STATUS']),
+  },
+  async mounted() {
+    // await this.FETCH_STATUS();
+    // this.status = this.STATUS();
+
+    // make call for historical data
+    const response = await axios.get('/api/sensor/');
+    // eslint-disable-next-line no-console
+    console.log('MADE CALL FOR HISTORY');
+    // eslint-disable-next-line no-console
+    console.log(response.data['data']);
+    const history_data = response.data['data'];
+
+    // set store data with result
+    this.$store.dispatch("SET_PS_DATA", history_data);
+  },
+};
+
 </script>
 
 <style scoped lang="scss">
-  .charts {
-    padding: 5em 0em 0em 5em;
-    margin: 5em 0em 0em 5em;
-  }
+.charts {
+  padding: 5em 0em 0em 5em;
+  margin: 5em 0em 0em 5em;
+}
 </style>
