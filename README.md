@@ -3,6 +3,8 @@ The following project was created alongside [MrConfetti](https://github.com/MrCo
 
 The following document showcases which technologies were used to create our application as well as a small section on why the application was chosen.
 
+<a href="url"><img src="Selection_657.png" align="left" height="600" width="480" ></a>
+
 ## Architecture
 The architecture follows the following structure. Sensors of different types send data continuously through a distributed message broker. Messages are consumed by a consumer who inserts sensor data into a database. From the other end, clients connect to a frontend. From there, different requests can be made to either an authorization service, or to a data service. These services have access to the two different types of databases which both store different things namely data and clients. What is not visible in the diagram is the socket connection between the frontend clients and a backend service that consumes the same data as the broker consumers and feeds it to the frontend. Everything runs in Docker, is orchestrated by Kubernetes, load balanced by Kubernetes services, and external traffic is routed via an ingress controller. 
 ![Architecture](architecture.png)
