@@ -1,4 +1,5 @@
 # Report
+The following project was created alongside [MrConfetti](https://github.com/MrConfetti) and [ArseniyNikonov](https://github.com/ArseniyNikonov).
 
 The following document showcases which technologies were used to create our application as well as a small section on why the application was chosen.
 
