@@ -17,7 +17,7 @@ const status = require('../routes/api/status');
 const sensor = require('../routes/api/sensor');
 
 // Use routes
-app.use('/api/status', status);ubervelocity/wmd-frontend
+app.use('/api/status', status);
 app.use('/api/sensor', sensor);
 
 const port = process.env.PORT || 5001;
