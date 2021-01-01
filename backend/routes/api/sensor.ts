@@ -1,11 +1,10 @@
 import express = require('express');
 import { connectCassandra } from '../../middleware/connectCassandra';
-import cassandra from 'cassandra-driver';
 
-const router = express.Router();
+const sensor = express.Router();
 
 // GET URL:PORT/api/sensor/
-router.get('/', connectCassandra, async (req, res) => {
+sensor.get('/', connectCassandra, async (req, res) => {
     const cassandraClient = res.client;
     const query = 'SELECT * FROM ptSensor';
     let data;
@@ -31,4 +30,4 @@ router.get('/', connectCassandra, async (req, res) => {
     res.status(200).json({ data });
 });
 
-module.exports = router;
+export { sensor };

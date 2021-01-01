@@ -15,11 +15,11 @@ app.use(express.json());
 
 // Import routes
 import { status } from '../routes/api/status';
-// import sensor = require('../routes/api/sensor');
+import { sensor } from '../routes/api/sensor';
 
 // Use routes
 app.use('/api/status', status);
-// app.use('/api/sensor', sensor);
+app.use('/api/sensor', sensor);
 
 const port = process.env.PORT || 5001;
 
