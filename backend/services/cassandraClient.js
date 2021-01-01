@@ -1,5 +1,4 @@
 function cassandraClient() {
-    console.log('Creating Cassandra Client...');
     const localDatacenter = 'datacenter1';
     const cassandra = require('cassandra-driver');
 

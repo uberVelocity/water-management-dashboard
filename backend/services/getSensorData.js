@@ -1,5 +1,4 @@
 async function getSensorData(cassandraClient) {
-    console.log('GET SENSOR DATA FUNCTION');
     const query = 'SELECT * FROM sensor1';
     let data = undefined;
         await new Promise((resolve, reject) => {
