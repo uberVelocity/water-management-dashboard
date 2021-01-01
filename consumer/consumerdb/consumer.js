@@ -2,7 +2,7 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
   clientId: 'consumerdb',
-  brokers: ['kafka1:9091', 'kafka2:9092', 'kafka3:9093']
+  brokers: ['kafka:9092']
 })
 
 // Cassandra variables

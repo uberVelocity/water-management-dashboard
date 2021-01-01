@@ -1,8 +1,8 @@
 const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
-  clientId: 'my-app',
-  brokers: ['kafka1:9091', 'kafka2:9092', 'kafka3:9093']
+  clientId: 'backend-updates',
+  brokers: ['kafka:9092']
 })
 
 const consumer = kafka.consumer({ groupId: 'live_update' });
@@ -21,44 +21,38 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
-app.get('/test', (req, res) => {
-    console.log('received get request!')
-    res.status(200).json({
-        message: 'socket server is reachable'
-    });
-});
-
 const port = process.env.PORT || 5500;
 
 // Start listening for requests
 server.listen(port, () => console.log(`Backend started on port ${port}`));
 
 const io = require('socket.io')(server);
-const connections = [];
+console.log('printing io...');
+console.log(io);
 
-// Listen for socket connections
-io.sockets.on('connection', async (socket) => {
-    // Push connection to client on connections stack
-    connections.push(socket);
-    console.log(`a user has connected: ${connections.length} connected`);
+let connections = [];
 
-    await consumer.connect()  
+function pushToSocket(data) {
+    for (connection of connections) {
+        connection.emit("pressure", data)
+    }
+}
+
+async function runConsumer() {
+    console.log('Running consumer...')
+    // Connect to Kafka
+    await consumer.connect()
     await consumer.subscribe({ topic: 'sensor_data', fromBeginning: true })
 
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
-            console.log({
-                partition,
-                offset: message.offset,
-                value: message.value.toString(),
-            });
             const data = JSON.parse(message.value.toString());
             const type = data["type"];
             
             console.log(`emitting to ${type}`)
-
+    
             if (type == "pressure") {
-                socket.broadcast.emit("pressure", data)
+                pushToSocket(data)
             } 
             else if (type == "leakage") {
                 socket.broadcast.emit("leakage", data)
@@ -68,10 +62,18 @@ io.sockets.on('connection', async (socket) => {
             }
         }
     });
+}
+
+runConsumer()
+
+// Listen for socket connections
+io.of('/socket.io/').on('connection', async (socket) => {
+    // Push connection to client on connections stack
+    connections.push(socket);
+    console.log(`a user has connected: ${connections.length} connected`);
 });
 
 io.sockets.on('disconnect', (socket) => {
     connections.splice(connections.indexOf(socket, 1));
     console.log(`a user has disconnected: ${connections.length} connected`);
 });
-

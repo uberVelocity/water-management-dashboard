@@ -7,4 +7,4 @@ spec:
     app: backend-updates
   ports:
   - port: 5500
-    targetPort: backend-updates
+    targetPort: 5500
