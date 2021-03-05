@@ -26,21 +26,21 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
     restart: always
 
-  # kafka:
-  #   container_name: kafka
-  #   image: 'docker.io/bitnami/kafka:2-debian-10'
-  #   ports:
-  #     - '9092:9092'
-  #   networks: 
-  #     - bridge-network
-  #   volumes:
-  #     - 'kafka_data:/bitnami'
-  #   environment:
-  #     - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-  #     - ALLOW_PLAINTEXT_LISTENER=yes
-  #   depends_on:
-  #     - zookeeper
-  #   restart: always
+   kafka:
+     container_name: kafka
+     image: 'docker.io/bitnami/kafka:2-debian-10'
+     ports:
+       - '9092:9092'
+     networks:
+       - bridge-network
+     volumes:
+       - 'kafka_data:/bitnami'
+     environment:
+       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+       - ALLOW_PLAINTEXT_LISTENER=yes
+     depends_on:
+       - zookeeper
+     restart: always
 
   # Kafka infrastructure
   kafka1:
@@ -267,40 +267,40 @@ services:
     logging:
       driver: none
 
-  # cassandra_2:
-  #   container_name: cassandra_2
-  #   build: cassandra/
-  #   networks: 
-  #     - bridge-network
-  #   environment: 
-  #     - CASSANDRA_SEEDS=cassandra_1
-  #     - HEAP_NEWSIZE=128M
-  #     - MAX_HEAP_SIZE=2048M
-  #   expose:
-  #     - 7000
-  #     - 7001
-  #     - 7199
-  #     - 9042
-  #     - 9160
-  #   restart: always
-  #   logging:
-  #     driver: none
+   cassandra_2:
+     container_name: cassandra_2
+     build: cassandra/
+     networks:
+       - bridge-network
+     environment:
+       - CASSANDRA_SEEDS=cassandra_1
+       - HEAP_NEWSIZE=128M
+       - MAX_HEAP_SIZE=2048M
+     expose:
+       - 7000
+       - 7001
+       - 7199
+       - 9042
+       - 9160
+     restart: always
+     logging:
+       driver: none
 
-  # cassandra_3:
-  #   container_name: cassandra_3
-  #   build: cassandra/
-  #   networks: 
-  #     - bridge-network
-  #   environment:
-  #     - CASSANDRA_SEEDS=cassandra_1
-  #     - HEAP_NEWSIZE=128M
-  #     - MAX_HEAP_SIZE=2048M
-  #   expose:
-  #     - 7000
-  #     - 7001
-  #     - 7199
-  #     - 9042
-  #     - 9160
-  #   restart: always
-  #   logging:
-  #     driver: none
+   cassandra_3:
+     container_name: cassandra_3
+     build: cassandra/
+     networks:
+       - bridge-network
+     environment:
+       - CASSANDRA_SEEDS=cassandra_1
+       - HEAP_NEWSIZE=128M
+       - MAX_HEAP_SIZE=2048M
+     expose:
+       - 7000
+       - 7001
+       - 7199
+       - 9042
+       - 9160
+     restart: always
+     logging:
+       driver: none

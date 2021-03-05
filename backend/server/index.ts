@@ -1,7 +1,7 @@
-import express = require('express');
-import cors = require('cors');
-import bodyParser = require('body-parser');
-import http = require('http');
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import http from 'http';
 
 const app = express();
 const server = http.createServer(app);
